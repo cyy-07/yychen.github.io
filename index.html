@@ -438,7 +438,18 @@ buildBtn.addEventListener("click", (e) => {
 });
 
 document.addEventListener("click", (e) => {
-    if (!tentActive || e.target.closest('button')) return;
+    if (!tentActive) return;
+    
+    // Only allow build-tent and clear-tents buttons to work
+    if (e.target.closest('button')) {
+        const clickedButton = e.target.closest('button');
+        if (clickedButton.id !== 'build-tent' && clickedButton.id !== 'clear-tents') {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        return;
+    }
     
     const tent = document.createElement("div");
     tent.className = "tent-mark";
@@ -446,7 +457,7 @@ document.addEventListener("click", (e) => {
     tent.style.left = `${e.pageX - 15}px`;
     tent.style.top = `${e.pageY - 15}px`;
     document.body.appendChild(tent);
-});
+}, true);
 
 clearBtn.addEventListener("click", (e) => {
     e.stopPropagation();
