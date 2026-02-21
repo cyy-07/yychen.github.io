@@ -68,6 +68,38 @@
         .stat-lab { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; }
 
         .content { display: flex; flex-direction: column; gap: 20px; }
+        
+        /* ==================== NEW TAB STYLES ==================== */
+        .tab-nav {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-left: 5px;
+        }
+        .tab-btn {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn:hover { color: var(--accent-cyan); }
+        .tab-btn.active {
+            color: var(--accent-cyan);
+            border-bottom: 2px solid var(--accent-cyan);
+        }
+        .tab-content { display: none; flex-direction: column; gap: 20px; }
+        .tab-content.active { display: flex; animation: tabFade 0.4s ease; }
+        @keyframes tabFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .card {
             background: var(--card-inner); border: 1px solid var(--border);
             border-radius: 16px; padding: 25px 30px; transition: 0.3s;
@@ -141,8 +173,6 @@
             to { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
-        /* ==================== NEW FEATURES ==================== */
-        
         /* Wellbeing controls box */
         .wellbeing-controls {
             display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;
@@ -337,75 +367,97 @@
     </aside>
 
     <main class="content">
-        <section class="card">
-            <h2 class="h2-edu"><i class="fas fa-graduation-cap"></i> Education</h2>
-            <div class="timeline-item">
-                <div class="header-flex">
-                    <span>East China University of Science and Technology</span>
-                    <span class="date-tag">2022.09 - 2026.06</span>
-                </div>
-                <div class="sub-header">B.S. in Chemical Engineering</div>
-                <div style="margin-top: 5px;">
-                    <div class="grade-pill"><span>Advanced Math</span><span class="val">98</span></div>
-                    <div class="grade-pill"><span>Big Data Algo</span><span class="val">100</span></div>
-                    <div class="grade-pill"><span>AI & Ethics</span><span class="val">100</span></div>
-                    <div class="grade-pill"><span>Data Structures</span><span class="val">94</span></div>
-                    <div class="grade-pill"><span>Principles of ChemE</span><span class="val">91</span></div>
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="header-flex"><span>University of California, Riverside (GPP)</span><span class="date-tag">2025.09 - 2026.06</span></div>
-                <div class="sub-header">Exchange Program · Computer Science & Academic Training</div>
-            </div>
-            <div class="timeline-item" style="margin-bottom: 0;">
-                <div class="header-flex"><span>University of Texas at Austin</span><span class="date-tag">2024 Summer</span></div>
-                <div class="sub-header">Core Summer Courses · All A Grades (Data Analysis, Python, Academic Writing)</div>
-            </div>
-        </section>
+        <div class="tab-nav">
+            <div class="tab-btn active" onclick="switchTab('home')">Home</div>
+            <div class="tab-btn" onclick="switchTab('education')">Education</div>
+            <div class="tab-btn" onclick="switchTab('research')">Research</div>
+        </div>
 
-        <section class="card">
-            <h2 class="h2-proj"><i class="fas fa-terminal"></i> Research & Projects</h2>
-            <div class="timeline-item">
-                <div class="header-flex"><span>Multiphase Catalytic Reactions (Machine Learning)</span><span class="date-tag">2024.03 - 2024.08</span></div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 8px 0; line-height: 1.6;">Led Python implementation of volcano plot generation for high-throughput screening and descriptor identification.</p>
-            </div>
-            <div class="timeline-item" style="margin-bottom: 0;">
-                <div class="header-flex"><span>Industrial Carbon Emission Optimization</span><span class="date-tag">2025.01 - Present</span></div>
-                <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 8px 0; line-height: 1.6;">Developed carbon quota optimization algorithms using Genetic Algorithms.</p>
-            </div>
-        </section>
+        <div id="home" class="tab-content active">
+            <section class="card">
+                <h2 class="h2-honor"><i class="fas fa-award"></i> Awards & Honors</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="font-size: 0.85rem;">
+                        <div style="color:var(--text-primary); margin-bottom:2px;">Mathematical Modeling Competition</div>
+                        <div style="color:var(--accent-green);">Provincial Third Prize · 2024</div>
+                    </div>
+                    <div style="font-size: 0.85rem;">
+                        <div style="color:var(--text-primary); margin-bottom:2px;">Mathematics Competition</div>
+                        <div style="color:var(--accent-green);">Provincial Third Prize · 2024</div>
+                    </div>
+                    <div style="font-size: 0.85rem;">
+                        <div style="color:var(--text-primary); margin-bottom:2px;">Academic Scholarship</div>
+                        <div style="color:var(--accent-green);">Third Class · 2022-2023, 2024-2025</div>
+                    </div>
+                    <div style="font-size: 0.85rem;">
+                        <div style="color:var(--text-primary); margin-bottom:2px;">CS Certificate</div>
+                        <div style="color:var(--accent-green);">Shanghai Network Tech Level 3</div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-        <section class="card">
-            <h2 class="h2-honor"><i class="fas fa-award"></i> Awards & Honors</h2>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div style="font-size: 0.85rem;">
-                    <div style="color:var(--text-primary); margin-bottom:2px;">Mathematical Modeling Competition</div>
-                    <div style="color:var(--accent-green);">Provincial Third Prize · 2024</div>
+        <div id="education" class="tab-content">
+            <section class="card">
+                <h2 class="h2-edu"><i class="fas fa-graduation-cap"></i> Education</h2>
+                
+                <div class="timeline-item">
+                    <div class="header-flex">
+                        <span>Fujian GaoKao (College Entrance Exam)</span>
+                        <span class="date-tag">2022</span>
+                    </div>
+                    <div class="sub-header">Ranked 6,802 / 218,000 students (Top 3%)</div>
+                    <div style="margin-top: 10px; padding: 12px; background: rgba(0, 210, 255, 0.03); border-left: 2px solid var(--accent-cyan); font-style: italic; font-size: 0.85rem; line-height: 1.5; color: var(--text-primary);">
+                        "While I was not always the most disciplined student, I gradually learned how to build systems for myself and take ownership of my growth."
+                    </div>
                 </div>
-                <div style="font-size: 0.85rem;">
-                    <div style="color:var(--text-primary); margin-bottom:2px;">Mathematics Competition</div>
-                    <div style="color:var(--accent-green);">Provincial Third Prize · 2024</div>
+
+                <div class="timeline-item">
+                    <div class="header-flex">
+                        <span>East China University of Science and Technology</span>
+                        <span class="date-tag">2022.09 - 2026.06</span>
+                    </div>
+                    <div class="sub-header">B.S. in Chemical Engineering</div>
+                    <div style="margin-top: 5px;">
+                        <div class="grade-pill"><span>Advanced Math</span><span class="val">98</span></div>
+                        <div class="grade-pill"><span>Big Data Algo</span><span class="val">100</span></div>
+                        <div class="grade-pill"><span>AI & Ethics</span><span class="val">100</span></div>
+                        <div class="grade-pill"><span>Data Structures</span><span class="val">94</span></div>
+                        <div class="grade-pill"><span>Principles of ChemE</span><span class="val">91</span></div>
+                    </div>
                 </div>
-                <div style="font-size: 0.85rem;">
-                    <div style="color:var(--text-primary); margin-bottom:2px;">Academic Scholarship</div>
-                    <div style="color:var(--accent-green);">Third Class · 2022-2023, 2024-2025</div>
+                <div class="timeline-item">
+                    <div class="header-flex"><span>University of California, Riverside (GPP)</span><span class="date-tag">2025.09 - 2026.06</span></div>
+                    <div class="sub-header">Exchange Program · Computer Science & Academic Training</div>
                 </div>
-                <div style="font-size: 0.85rem;">
-                    <div style="color:var(--text-primary); margin-bottom:2px;">CS Certificate</div>
-                    <div style="color:var(--accent-green);">Shanghai Network Tech Level 3</div>
+                <div class="timeline-item" style="margin-bottom: 0;">
+                    <div class="header-flex"><span>University of Texas at Austin</span><span class="date-tag">2024 Summer</span></div>
+                    <div class="sub-header">Core Summer Courses · All A Grades (Data Analysis, Python, Academic Writing)</div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+
+        <div id="research" class="tab-content">
+            <section class="card">
+                <h2 class="h2-proj"><i class="fas fa-terminal"></i> Research & Projects</h2>
+                <div class="timeline-item">
+                    <div class="header-flex"><span>Multiphase Catalytic Reactions (Machine Learning)</span><span class="date-tag">2024.03 - 2024.08</span></div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 8px 0; line-height: 1.6;">Led Python implementation of volcano plot generation for high-throughput screening and descriptor identification.</p>
+                </div>
+                <div class="timeline-item" style="margin-bottom: 0;">
+                    <div class="header-flex"><span>Industrial Carbon Emission Optimization</span><span class="date-tag">2025.01 - Present</span></div>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 8px 0; line-height: 1.6;">Developed carbon quota optimization algorithms using Genetic Algorithms.</p>
+                </div>
+            </section>
+        </div>
     </main>
 </div>
 
-<!-- Breathing Overlay -->
 <div class="breathing-overlay" id="breathingOverlay">
     <div class="breathing-circle" id="breathingCircle"></div>
     <div class="breathing-text" id="breathingText">Follow the circle</div>
 </div>
 
-<!-- Gentle Exit Overlay -->
 <div class="gentle-exit-overlay" id="gentleExitOverlay">
     <div class="exit-message">
         <h2>You've done enough</h2>
@@ -415,6 +467,22 @@
 </div>
 
 <script>
+// ==================== NEW TAB SYSTEM ====================
+function switchTab(tabId) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    // Remove active class from all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    // Show the selected tab content
+    document.getElementById(tabId).classList.add('active');
+    // Add active class to the clicked button
+    event.currentTarget.classList.add('active');
+}
+
 // ==================== ORIGINAL TENT FEATURE ====================
 let tentActive = false;
 const buildBtn = document.getElementById("build-tent");
@@ -440,10 +508,10 @@ buildBtn.addEventListener("click", (e) => {
 document.addEventListener("click", (e) => {
     if (!tentActive) return;
     
-    // Only allow build-tent and clear-tents buttons to work
-    const clickedElement = e.target.closest('button, a');
+    // Allow clicking on control buttons and tabs without building a tent
+    const clickedElement = e.target.closest('button, a, .tab-btn');
     if (clickedElement) {
-        if (clickedElement.id !== 'build-tent' && clickedElement.id !== 'clear-tents') {
+        if (clickedElement.id !== 'build-tent' && clickedElement.id !== 'clear-tents' && !clickedElement.classList.contains('tab-btn')) {
             e.preventDefault();
             e.stopPropagation();
             return;
@@ -492,7 +560,7 @@ document.getElementById('breathing-btn').addEventListener('click', function() {
         overlay.classList.remove('active');
         circle.classList.remove('animating');
         text.textContent = 'Follow the circle';
-    }, 10000);
+    }, 12000);
 });
 
 document.getElementById('breathingOverlay').addEventListener('click', function(e) {
