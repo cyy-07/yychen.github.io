@@ -21,33 +21,44 @@
             --border: #1e2535;
             --border-bright: #2a3650;
         }
-
         * { box-sizing: border-box; }
-
+        /* ===== STAR CANVAS & CURSOR (from FluxMind) ===== */
+        #star-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10; pointer-events: none;
+            mix-blend-mode: screen;
+        }
+        body { cursor: none; }
+        #cdot {
+            width: 8px; height: 8px; background: var(--accent-cyan); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0,210,255,0.9), 0 0 22px rgba(0,210,255,0.45);
+            transition: width 0.15s, height 0.15s, background 0.2s, box-shadow 0.2s;
+            mix-blend-mode: screen;
+        }
+        #cring {
+            width: 34px; height: 34px; border: 1.5px solid rgba(0,210,255,0.55);
+            border-radius: 50%; position: fixed; pointer-events: none; z-index: 99998;
+            box-shadow: 0 0 10px rgba(0,210,255,0.18);
+        }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
-            margin: 0; padding: 0;
-            display: flex; justify-content: center;
-            overflow-x: hidden;
+            background-color: var(--bg-deep); color: var(--text-primary);
+            margin: 0; padding: 0; display: flex; justify-content: center; overflow-x: hidden;
             background-image:
                 radial-gradient(ellipse 600px 400px at 80% 0%, rgba(0,210,255,0.04) 0%, transparent 70%),
                 radial-gradient(ellipse 500px 300px at 10% 80%, rgba(162,89,255,0.04) 0%, transparent 70%);
         }
-
         .main-wrapper {
             max-width: 1180px; width: 95%; margin: 40px auto;
             display: grid; grid-template-columns: 300px 1fr; gap: 24px;
+            position: relative; z-index: 1;
         }
-
         .sidebar { position: sticky; top: 40px; height: fit-content; display: flex; flex-direction: column; gap: 16px; }
-
         .profile-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px; padding: 28px 22px;
-            position: relative; overflow: hidden;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 20px; padding: 28px 22px; position: relative; overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
         .profile-box::before {
@@ -60,63 +71,46 @@
                               linear-gradient(90deg, rgba(0,210,255,0.015) 1px, transparent 1px);
             background-size: 30px 30px;
         }
-
         .avatar {
             width: 88px; height: 88px;
             background: linear-gradient(135deg, #0d1520, #141e30);
-            border: 1.5px solid var(--border-bright);
-            border-radius: 50%; margin: 0 auto 14px;
+            border: 1.5px solid var(--border-bright); border-radius: 50%; margin: 0 auto 14px;
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.8rem; font-weight: 800;
+            font-family: 'Inter', sans-serif; font-size: 1.8rem; font-weight: 800;
             color: var(--accent-cyan);
             box-shadow: 0 0 30px rgba(0,210,255,0.12), inset 0 0 20px rgba(0,210,255,0.03);
             position: relative; z-index: 1;
         }
-
         .name-title {
             text-align: center; position: relative; z-index: 1;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.35rem; font-weight: 800;
+            font-family: 'Inter', sans-serif; font-size: 1.35rem; font-weight: 800;
             margin: 0 0 4px 0; letter-spacing: 0.3px;
         }
         .name-sub {
-            text-align: center; font-size: 0.68rem;
-            color: var(--text-secondary); margin: 0 0 22px 0;
-            line-height: 1.6; position: relative; z-index: 1;
+            text-align: center; font-size: 0.68rem; color: var(--text-secondary);
+            margin: 0 0 22px 0; line-height: 1.6; position: relative; z-index: 1;
         }
         .aifs-badge {
             display: flex; align-items: center; justify-content: center; gap: 7px;
             background: linear-gradient(135deg, rgba(0,210,255,0.08), rgba(162,89,255,0.08));
-            border: 1px solid rgba(0,210,255,0.2);
-            border-radius: 8px; padding: 8px 12px; margin-bottom: 18px;
-            font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px;
-            color: var(--accent-cyan); text-transform: uppercase;
-            position: relative; z-index: 1;
+            border: 1px solid rgba(0,210,255,0.2); border-radius: 8px; padding: 8px 12px; margin-bottom: 18px;
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; color: var(--accent-cyan);
+            text-transform: uppercase; position: relative; z-index: 1;
         }
         .aifs-badge .dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent-green);
-            box-shadow: 0 0 6px var(--accent-green);
-            animation: pulse 2s ease-in-out infinite;
+            width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green); animation: pulse 2s ease-in-out infinite;
         }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-
         .stat-bar {
-            display: flex; justify-content: space-around;
-            padding: 16px 0; border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border); margin-bottom: 18px;
-            position: relative; z-index: 1;
+            display: flex; justify-content: space-around; padding: 16px 0;
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            margin-bottom: 18px; position: relative; z-index: 1;
         }
         .stat-item { text-align: center; }
-        .stat-num {
-            display: block; color: var(--accent-green);
-            font-weight: 700; font-size: 1.05rem;
-            font-family: 'Inter', sans-serif;
-        }
+        .stat-num { display: block; color: var(--accent-green); font-weight: 700; font-size: 1.05rem; font-family: 'Inter', sans-serif; }
         .stat-lab { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
         .stat-div { width: 1px; background: var(--border); }
-
         .info-link {
             display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
             font-size: 0.75rem; color: var(--text-secondary); text-decoration: none; transition: 0.3s;
@@ -124,35 +118,26 @@
         }
         .info-link:hover { color: var(--accent-cyan); transform: translateX(4px); }
         .info-link i { color: var(--accent-cyan); width: 16px; text-align: center; font-size: 0.8rem; }
-
         .btn-cv {
             display: block; width: 100%; padding: 11px; margin-top: 18px;
             background: transparent; border: 1px solid var(--accent-cyan);
             color: var(--accent-cyan); text-align: center; text-decoration: none;
             font-weight: 700; border-radius: 10px; transition: 0.3s;
             text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1.5px;
-            font-family: 'Inter', sans-serif; box-sizing: border-box;
-            position: relative; z-index: 1;
+            font-family: 'Inter', sans-serif; box-sizing: border-box; position: relative; z-index: 1;
         }
         .btn-cv:hover { background: var(--accent-cyan); color: #000; box-shadow: 0 0 20px rgba(0,210,255,0.3); }
-
-        .mini-card {
-            background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 16px; padding: 18px 20px;
-        }
+        .mini-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
         .mini-card-title {
             font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1.5px; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px;
+            letter-spacing: 1.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
         }
         .tag {
             font-size: 0.68rem; padding: 3px 9px; border-radius: 5px;
             background: rgba(255,255,255,0.03); color: var(--text-secondary);
-            border: 1px solid var(--border); margin: 3px 3px 3px 0;
-            display: inline-block; transition: 0.25s; cursor: default;
+            border: 1px solid var(--border); margin: 3px 3px 3px 0; display: inline-block; transition: 0.25s; cursor: default;
         }
         .tag:hover { border-color: var(--accent-purple); color: var(--accent-purple); }
-
         .tent-controls { display: flex; gap: 8px; margin-top: 14px; }
         #build-tent, #clear-tents {
             flex: 1; padding: 9px; cursor: pointer; font-weight: 700; border-radius: 8px;
@@ -163,7 +148,6 @@
         #build-tent.active { background: #ff5555; border-color: #ff5555; color: #fff; }
         #clear-tents { background: transparent; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); display: none; }
         #clear-tents:hover { background: var(--accent-cyan); color: #000; }
-
         .wellbeing-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
         .wellbeing-btn {
             padding: 9px; cursor: pointer; font-weight: 700; border-radius: 8px;
@@ -174,18 +158,15 @@
         #breathing-btn:hover { background: var(--accent-cyan); color: #000; }
         #snow-btn { border-color: var(--accent-purple); color: var(--accent-purple); }
         #snow-btn:hover { background: var(--accent-purple); color: #000; }
-        #gentle-exit-btn { grid-column: 1/-1; border-color: var(--accent-green); color: var(--accent-green); }
+        #gentle-exit-btn { border-color: var(--accent-green); color: var(--accent-green); }
+        #star-toggle-btn:hover { background: var(--accent-cyan); color: #000; }
+        #star-toggle-btn.off { border-color: var(--text-secondary); color: var(--text-secondary); }
         #gentle-exit-btn:hover { background: var(--accent-green); color: #000; }
-
-        /* ==================== MAIN CONTENT ==================== */
         .content { display: flex; flex-direction: column; gap: 20px; }
-
         .tab-nav {
-            display: flex; gap: 4px;
-            border-bottom: 1px solid var(--border); padding-left: 0;
-            background: var(--bg-card); border-radius: 14px 14px 0 0;
-            border: 1px solid var(--border); border-bottom: none;
-            padding: 8px 8px 0 8px; overflow: hidden;
+            display: flex; gap: 4px; background: var(--bg-card);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 14px 14px 0 0;
+            border: 1px solid var(--border); border-bottom: none; padding: 8px 8px 0 8px; overflow: hidden;
         }
         .tab-btn {
             padding: 10px 18px; cursor: pointer; color: var(--text-secondary);
@@ -195,126 +176,81 @@
         }
         .tab-btn:hover { color: var(--accent-cyan); background: rgba(0,210,255,0.04); }
         .tab-btn.active { color: var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); background: rgba(0,210,255,0.06); }
-
         .tab-content { display: none; flex-direction: column; gap: 18px; }
         .tab-content.active { display: flex; animation: tabFade 0.35s ease; }
         @keyframes tabFade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-
         .card {
             background: var(--bg-card); border: 1px solid var(--border);
             border-radius: 0 16px 16px 16px; padding: 26px 28px; transition: 0.3s;
         }
         .card:hover { border-color: var(--border-bright); box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
         .card + .card { border-radius: 16px; }
-
         .section-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem; font-weight: 800; margin: 0 0 20px 0;
-            display: flex; align-items: center; gap: 10px;
-            text-transform: uppercase; letter-spacing: 1.5px;
+            font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 800; margin: 0 0 20px 0;
+            display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1.5px;
         }
         .s-cyan { color: var(--accent-cyan); }
         .s-purple { color: var(--accent-purple); }
         .s-green { color: var(--accent-green); }
         .s-amber { color: var(--accent-amber); }
-
-        /* ==================== HOME TAB ==================== */
         .hero-banner {
-            background: linear-gradient(135deg, rgba(0,210,255,0.05) 0%, rgba(162,89,255,0.05) 50%, rgba(42,255,160,0.03) 100%);
-            border: 1px solid var(--border);
-            border-radius: 0 16px 16px 16px;
-            padding: 30px 32px;
-            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, rgba(0,210,255,0.04) 0%, rgba(162,89,255,0.04) 50%, rgba(42,255,160,0.02) 100%);
+            border: 1px solid var(--border); border-radius: 0 16px 16px 16px; padding: 30px 32px; position: relative; overflow: hidden;
         }
         .hero-label {
-            font-size: 0.68rem; font-weight: 700; letter-spacing: 2.5px;
-            text-transform: uppercase; color: var(--accent-cyan);
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent-cyan);
             display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
         }
         .hero-label::before { content: ""; width: 24px; height: 1px; background: var(--accent-cyan); }
-        .hero-h1 {
-            font-family: 'Inter', sans-serif; font-size: 1.85rem; font-weight: 800;
-            margin: 0 0 14px 0; line-height: 1.25;
-            color: var(--text-primary);
-        }
-        .hero-desc {
-            font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8;
-            max-width: 540px; margin: 0 0 20px 0;
-        }
+        .hero-h1 { font-family: 'Inter', sans-serif; font-size: 1.85rem; font-weight: 800; margin: 0 0 14px 0; line-height: 1.25; }
+        .hero-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.8; max-width: 540px; margin: 0 0 20px 0; }
         .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .hero-tag {
-            padding: 5px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700;
-            letter-spacing: 0.5px; border: 1px solid;
-        }
+        .hero-tag { padding: 5px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; border: 1px solid; }
         .hero-tag.cyan { border-color: rgba(0,210,255,0.3); color: var(--accent-cyan); background: rgba(0,210,255,0.07); }
         .hero-tag.purple { border-color: rgba(162,89,255,0.3); color: var(--accent-purple); background: rgba(162,89,255,0.07); }
         .hero-tag.green { border-color: rgba(42,255,160,0.3); color: var(--accent-green); background: rgba(42,255,160,0.07); }
-
         .research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .research-item {
-            background: var(--bg-card2); border: 1px solid var(--border);
-            border-radius: 12px; padding: 18px;
+            background: var(--bg-card2); border: 1px solid var(--border); border-radius: 12px; padding: 18px;
             transition: 0.3s; position: relative; overflow: hidden;
         }
         .research-item:hover { border-color: var(--border-bright); transform: translateY(-2px); }
-        .research-item::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-        }
+        .research-item::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
         .research-item.cyan::before { background: linear-gradient(90deg, var(--accent-cyan), transparent); }
         .research-item.purple::before { background: linear-gradient(90deg, var(--accent-purple), transparent); }
         .ri-icon { font-size: 1.4rem; margin-bottom: 10px; }
         .ri-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; font-family: 'Inter', sans-serif; }
         .ri-desc { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.6; }
-        .ri-badge {
-            display: inline-block; margin-top: 8px; padding: 2px 8px;
-            border-radius: 4px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px;
-        }
+        .ri-badge { display: inline-block; margin-top: 8px; padding: 2px 8px; border-radius: 4px; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; }
         .ri-badge.under-review { background: rgba(255,179,71,0.1); color: var(--accent-amber); border: 1px solid rgba(255,179,71,0.25); }
         .ri-badge.ongoing { background: rgba(42,255,160,0.08); color: var(--accent-green); border: 1px solid rgba(42,255,160,0.2); }
-
         .courses-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .course-item {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--bg-card2); border: 1px solid var(--border);
-            border-radius: 8px; padding: 10px 14px; transition: 0.25s;
+            background: var(--bg-card2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; transition: 0.25s;
         }
         .course-item:hover { border-color: var(--border-bright); }
         .course-name { font-size: 0.72rem; color: var(--text-primary); }
-        .course-grade {
-            font-size: 0.75rem; font-weight: 700; font-family: 'Inter', sans-serif;
-            padding: 2px 7px; border-radius: 5px;
-        }
+        .course-grade { font-size: 0.75rem; font-weight: 700; font-family: 'Inter', sans-serif; padding: 2px 7px; border-radius: 5px; }
         .grade-ap { background: rgba(42,255,160,0.12); color: var(--accent-green); }
         .grade-a { background: rgba(0,210,255,0.1); color: var(--accent-cyan); }
         .grade-num-high { background: rgba(42,255,160,0.1); color: var(--accent-green); }
         .grade-num-mid { background: rgba(0,210,255,0.08); color: var(--accent-cyan); }
-
         .courses-source {
-            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px;
-            color: var(--text-secondary); margin: 14px 0 8px 0;
-            padding-left: 2px; display: flex; align-items: center; gap: 6px;
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary);
+            margin: 14px 0 8px 0; padding-left: 2px; display: flex; align-items: center; gap: 6px;
         }
         .courses-source::before { content: ""; flex: 1; height: 1px; background: var(--border); }
         .courses-source::after { content: ""; flex: 1; height: 1px; background: var(--border); }
-
         .awards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .award-item {
-            background: var(--bg-card2); border: 1px solid var(--border);
-            border-radius: 10px; padding: 14px 16px; transition: 0.25s;
-        }
+        .award-item { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; transition: 0.25s; }
         .award-item:hover { border-color: rgba(42,255,160,0.3); }
         .award-name { font-size: 0.78rem; color: var(--text-primary); margin-bottom: 4px; }
         .award-detail { font-size: 0.68rem; color: var(--accent-green); }
-
-        /* ==================== EDUCATION TAB ==================== */
-        .timeline-item {
-            position: relative; padding-left: 24px;
-            border-left: 1px solid var(--border); margin-bottom: 26px;
-        }
+        .timeline-item { position: relative; padding-left: 24px; border-left: 1px solid var(--border); margin-bottom: 26px; }
         .timeline-item:last-child { margin-bottom: 0; }
         .timeline-item::before {
-            content: ""; position: absolute; left: -5px; top: 7px;
-            width: 9px; height: 9px; border-radius: 50%;
+            content: ""; position: absolute; left: -5px; top: 7px; width: 9px; height: 9px; border-radius: 50%;
             background: var(--bg-deep); border: 2px solid var(--accent-cyan);
         }
         .timeline-item.dim::before { border-color: var(--text-secondary); }
@@ -322,203 +258,114 @@
         .date-tag { color: var(--text-secondary); font-size: 0.72rem; font-weight: 400; white-space: nowrap; }
         .sub-header { font-size: 0.78rem; color: var(--accent-cyan); margin: 5px 0 10px 0; }
         .grade-pill {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: rgba(42,255,160,0.04); padding: 3px 9px;
-            border-radius: 5px; font-size: 0.7rem; margin: 3px 5px 3px 0;
-            border: 1px solid rgba(42,255,160,0.12);
+            display: inline-flex; align-items: center; gap: 7px; background: rgba(42,255,160,0.04);
+            padding: 3px 9px; border-radius: 5px; font-size: 0.7rem; margin: 3px 5px 3px 0; border: 1px solid rgba(42,255,160,0.12);
         }
         .grade-pill .val { color: var(--accent-green); font-weight: 700; }
         .quote-block {
-            margin-top: 10px; padding: 12px 14px;
-            background: rgba(0,210,255,0.03); border-left: 2px solid var(--accent-cyan);
-            font-style: italic; font-size: 0.78rem; line-height: 1.7;
-            color: var(--text-secondary); border-radius: 0 6px 6px 0;
+            margin-top: 10px; padding: 12px 14px; background: rgba(0,210,255,0.03);
+            border-left: 2px solid var(--accent-cyan); font-style: italic; font-size: 0.78rem;
+            line-height: 1.7; color: var(--text-secondary); border-radius: 0 6px 6px 0;
         }
-
-        /* ==================== RESEARCH TAB ==================== */
         .pub-badge {
             display: inline-flex; align-items: center; gap: 6px;
             background: rgba(255,179,71,0.08); border: 1px solid rgba(255,179,71,0.2);
-            border-radius: 6px; padding: 4px 10px; font-size: 0.67rem; font-weight: 700;
-            color: var(--accent-amber); margin-bottom: 10px;
+            border-radius: 6px; padding: 4px 10px; font-size: 0.67rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 10px;
         }
-
-        /* ==================== PROJECTS TAB ==================== */
         .project-card {
             background: var(--bg-card2);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 0;
-            overflow: hidden;
-            transition: 0.3s;
-            position: relative;
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px;
+            padding: 0; overflow: hidden; transition: 0.3s; position: relative;
         }
-        .project-card:hover {
-            border-color: var(--border-bright);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-        }
-        .project-card-top {
-            position: relative;
-            height: 7px;
-        }
+        .project-card:hover { border-color: var(--border-bright); transform: translateY(-3px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .project-card-top { position: relative; height: 7px; }
         .project-card-body { padding: 24px 26px 20px; }
-
         .project-live-badge {
             display: inline-flex; align-items: center; gap: 6px;
             background: rgba(42,255,160,0.08); border: 1px solid rgba(42,255,160,0.25);
             border-radius: 6px; padding: 4px 10px; font-size: 0.67rem; font-weight: 700;
-            color: var(--accent-green); margin-bottom: 14px;
-            text-decoration: none; transition: 0.25s; cursor: default;
+            color: var(--accent-green); margin-bottom: 14px; text-decoration: none; cursor: default;
         }
         .project-live-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent-green);
-            box-shadow: 0 0 6px var(--accent-green);
-            animation: pulse 2s ease-in-out infinite;
+            width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green); animation: pulse 2s ease-in-out infinite;
         }
-
-        .project-title {
-            font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0;
-            font-family: 'Inter', sans-serif; color: var(--text-primary);
-        }
-        .project-subtitle {
-            font-size: 0.78rem; color: var(--accent-cyan);
-            margin: 0 0 14px 0; font-style: italic;
-        }
-        .project-desc {
-            font-size: 0.82rem; color: var(--text-secondary);
-            line-height: 1.85; margin: 0 0 20px 0;
-        }
-
-        .project-highlights {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-            margin-bottom: 22px;
-        }
+        .project-title { font-size: 1.25rem; font-weight: 800; margin: 0 0 6px 0; font-family: 'Inter', sans-serif; color: var(--text-primary); }
+        .project-subtitle { font-size: 0.78rem; color: var(--accent-cyan); margin: 0 0 14px 0; font-style: italic; }
+        .project-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.85; margin: 0 0 20px 0; }
+        .project-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
         .highlight-item {
-            background: rgba(0,0,0,0.25);
-            border: 1px solid var(--border);
-            border-radius: 10px; padding: 12px 14px;
-            display: flex; align-items: flex-start; gap: 10px;
+            background: rgba(0,0,0,0.12); border: 1px solid var(--border); border-radius: 10px;
+            padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;
         }
         .highlight-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
         .highlight-text { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.55; }
         .highlight-text strong { color: var(--text-primary); display: block; margin-bottom: 2px; font-size: 0.73rem; }
-
-        .project-stack {
-            display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px;
-        }
-        .stack-tag {
-            font-size: 0.67rem; padding: 3px 10px; border-radius: 5px;
-            font-weight: 700; letter-spacing: 0.3px;
-        }
+        .project-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 22px; }
+        .stack-tag { font-size: 0.67rem; padding: 3px 10px; border-radius: 5px; font-weight: 700; letter-spacing: 0.3px; }
         .stack-tag.frontend { background: rgba(0,210,255,0.08); color: var(--accent-cyan); border: 1px solid rgba(0,210,255,0.2); }
         .stack-tag.backend  { background: rgba(162,89,255,0.08); color: var(--accent-purple); border: 1px solid rgba(162,89,255,0.2); }
         .stack-tag.data     { background: rgba(42,255,160,0.07); color: var(--accent-green); border: 1px solid rgba(42,255,160,0.18); }
         .stack-tag.infra    { background: rgba(255,179,71,0.07); color: var(--accent-amber); border: 1px solid rgba(255,179,71,0.2); }
-
-        .project-cta {
-            display: flex; gap: 10px; flex-wrap: wrap;
-        }
+        .project-cta { display: flex; gap: 10px; flex-wrap: wrap; }
         .cta-btn {
-            display: inline-flex; align-items: center; gap: 7px;
-            padding: 10px 20px; border-radius: 8px; font-size: 0.75rem;
-            font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif;
-            transition: 0.25s; text-transform: uppercase; letter-spacing: 0.5px;
-            text-decoration: none;
+            display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: 0.25s; text-transform: uppercase; letter-spacing: 0.5px; text-decoration: none;
         }
-        .cta-primary {
-            background: var(--accent-green); color: #000; border: none;
-        }
+        .cta-primary { background: var(--accent-green); color: #000; border: none; }
         .cta-primary:hover { background: #1de88a; box-shadow: 0 0 20px rgba(42,255,160,0.4); transform: translateY(-1px); }
-        .cta-secondary {
-            background: transparent; color: var(--text-secondary);
-            border: 1px solid var(--border-bright);
-        }
+        .cta-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-bright); }
         .cta-secondary:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
-
-        /* Hackathon badge strip */
         .hackathon-strip {
             display: flex; align-items: center; gap: 14px;
             background: linear-gradient(135deg, rgba(255,179,71,0.06), rgba(162,89,255,0.06));
-            border: 1px solid rgba(255,179,71,0.18);
-            border-radius: 12px; padding: 14px 18px; margin-bottom: 22px;
+            border: 1px solid rgba(255,179,71,0.18); border-radius: 12px; padding: 14px 18px; margin-bottom: 22px;
         }
         .hackathon-icon { font-size: 1.8rem; }
         .hackathon-text { flex: 1; }
         .hackathon-name { font-size: 0.82rem; font-weight: 700; color: var(--accent-amber); margin-bottom: 2px; }
         .hackathon-detail { font-size: 0.72rem; color: var(--text-secondary); }
-
-        /* Stats row */
         .project-stats {
-            display: flex; gap: 0;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--border);
-            border-radius: 10px; overflow: hidden;
-            margin-bottom: 22px;
+            display: flex; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
+            border-radius: 10px; overflow: hidden; margin-bottom: 22px;
         }
-        .pstat {
-            flex: 1; text-align: center; padding: 12px 8px;
-            border-right: 1px solid var(--border);
-        }
+        .pstat { flex: 1; text-align: center; padding: 12px 8px; border-right: 1px solid var(--border); }
         .pstat:last-child { border-right: none; }
         .pstat-val { font-size: 1.05rem; font-weight: 800; font-family: 'Inter', sans-serif; }
         .pstat-lab { font-size: 0.6rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; }
-
-        /* More projects placeholder */
         .more-projects-card {
-            background: var(--bg-card2);
-            border: 1px dashed var(--border-bright);
-            border-radius: 16px; padding: 30px 26px;
-            display: flex; align-items: center; gap: 20px;
-            transition: 0.3s;
+            background: rgba(17,22,32,0.38); border: 1px dashed var(--border-bright); border-radius: 16px;
+            padding: 30px 26px; display: flex; align-items: center; gap: 20px; transition: 0.3s;
         }
         .more-projects-card:hover { border-color: rgba(0,210,255,0.3); }
         .more-icon { font-size: 2.4rem; opacity: 0.4; flex-shrink: 0; }
         .more-text h3 { font-size: 0.88rem; font-weight: 700; margin: 0 0 6px 0; color: var(--text-secondary); }
         .more-text p { font-size: 0.75rem; color: var(--text-secondary); opacity: 0.7; margin: 0; line-height: 1.6; }
-
-        /* ==================== ABOUT TAB ==================== */
-        .sk-group-label {
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 10px;
-        }
+        .sk-group-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
         .sk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .sk-item {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--bg-card2); border: 1px solid var(--border);
-            border-radius: 8px; padding: 8px 12px; gap: 10px;
-            transition: border-color 0.2s;
+            background: var(--bg-card2); border: 1px solid var(--border); border-radius: 8px;
+            padding: 8px 12px; gap: 10px; transition: border-color 0.2s;
         }
         .sk-item:hover { border-color: var(--border-bright); }
         .sk-name { font-size: 0.73rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
         .sk-stars { display: flex; gap: 3px; flex-shrink: 0; }
         .sk-star { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
-        .sk-star.full  { opacity: 1; }
-        .sk-star.half  { opacity: 0.45; }
+        .sk-star.full { opacity: 1; }
+        .sk-star.half { opacity: 0.45; }
         .sk-star.empty { opacity: 0.12; background: #888 !important; }
-
-        .goal-item {
-            background: var(--bg-card2); border: 1px solid var(--border);
-            border-radius: 10px; padding: 14px 16px;
-        }
+        .goal-item { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
         .goal-icon { font-size: 1.3rem; margin-bottom: 6px; }
         .goal-title { font-size: 0.72rem; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         .goal-body { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.6; }
-
-        /* ==================== OVERLAYS ==================== */
-        .tent-mark {
-            position: absolute; pointer-events: none; z-index: 1000;
-            filter: drop-shadow(0 0 5px var(--accent-green));
-            animation: tent-pop 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
-        }
+        .tent-mark { position: absolute; pointer-events: none; z-index: 1000; filter: drop-shadow(0 0 5px var(--accent-green)); animation: tent-pop 0.3s cubic-bezier(0.175,0.885,0.32,1.275); }
         @keyframes tent-pop { from { transform:scale(0) rotate(-20deg); opacity:0; } to { transform:scale(1) rotate(0deg); opacity:1; } }
-
         .breathing-overlay {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.88); backdrop-filter: blur(12px);
-            z-index: 9999; display:flex; flex-direction:column; align-items:center; justify-content:center;
-            opacity:0; pointer-events:none; transition: opacity 0.5s;
+            position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(12px); z-index: 9999; display:flex; flex-direction:column; align-items:center;
+            justify-content:center; opacity:0; pointer-events:none; transition: opacity 0.5s;
         }
         .breathing-overlay.active { opacity:1; pointer-events:all; }
         .breathing-circle {
@@ -526,14 +373,13 @@
             background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
             box-shadow: 0 0 60px rgba(0,210,255,0.5);
         }
-        .breathing-text { margin-top:28px; color:white; font-size:18px; font-weight:300; letter-spacing:2px; }
+        .breathing-text { margin-top:48px; color:white; font-size:18px; font-weight:300; letter-spacing:2px; }
         @keyframes breathe { 0%,100% { transform:scale(1); } 28.5% { transform:scale(1.8); } 57% { transform:scale(1.8); } }
         .breathing-circle.animating { animation: breathe 14s ease-in-out infinite; }
-
         .gentle-exit-overlay {
             position:fixed; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(180deg,#0d1020 0%,#060810 100%);
-            z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            background: linear-gradient(180deg,#0d1020 0%,#060810 100%); z-index:9999;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
             opacity:0; pointer-events:none; transition: opacity 1s ease-out;
         }
         .gentle-exit-overlay.active { opacity:1; pointer-events:all; }
@@ -544,89 +390,97 @@
         .star { position:absolute; width:2px; height:2px; background:white; border-radius:50%; opacity:0; animation: twinkle 3s ease-in-out infinite; }
         @keyframes twinkle { 0%,100% { opacity:0; } 50% { opacity:0.7; } }
         .return-btn {
-            margin-top:36px; padding:11px 28px;
-            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2);
-            color:white; border-radius:24px; cursor:pointer; font-size:13px;
-            transition: all 0.3s; backdrop-filter:blur(10px); font-family:'Inter',sans-serif;
+            margin-top:36px; padding:11px 28px; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.2); color:white; border-radius:24px; cursor:pointer;
+            font-size:13px; transition: all 0.3s; backdrop-filter:blur(10px); font-family:'Inter',sans-serif;
         }
         .return-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.4); }
-
         .snowflake {
-            position:fixed; top:-10px; color:white; font-size:20px;
-            pointer-events:none; z-index:9999; animation: snowfall linear forwards;
-            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            position:fixed; top:-10px; color:white; font-size:20px; pointer-events:none;
+            z-index:9999; animation: snowfall linear forwards; text-shadow: 0 0 5px rgba(255,255,255,0.8);
         }
         @keyframes snowfall { 0% { transform:translateY(-10px) rotate(0deg); opacity:1; } 100% { transform:translateY(100vh) rotate(360deg); opacity:0.5; } }
-
         .hero-cta-btn {
-            padding: 10px 20px; border-radius: 8px; font-size: 0.78rem;
-            font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif;
-            transition: 0.25s; display: inline-flex; align-items: center; gap: 7px;
+            padding: 10px 20px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: 0.25s; display: inline-flex; align-items: center; gap: 7px;
             text-transform: uppercase; letter-spacing: 0.5px;
         }
         .cyan-btn { background: var(--accent-cyan); color: #000; border: none; }
         .cyan-btn:hover { background: #00b8e0; box-shadow: 0 0 18px rgba(0,210,255,0.35); }
         .outline-btn { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-bright); }
         .outline-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
-
         [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
-            background: #1e2535; color: var(--text-primary); font-size: 0.65rem;
-            padding: 5px 10px; border-radius: 6px; white-space: nowrap;
-            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+            content: attr(data-tooltip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+            background: #1e2535; color: var(--text-primary); font-size: 0.65rem; padding: 5px 10px; border-radius: 6px;
+            white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s;
             border: 1px solid var(--border-bright); font-family: 'Inter', sans-serif;
         }
         [data-tooltip]:hover::after { opacity: 1; }
 
+        /* ===== LANGUAGE TOGGLE ===== */
+        .zh { display: none; }
+        body.lang-zh .zh { display: inline; }
+        body.lang-zh .en { display: none; }
+        body.lang-zh .zh-block { display: block; }
+        body.lang-zh .en-block { display: none; }
+        #lang-btn {
+            display: block; margin: 0 auto;
+            background: transparent; border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan); padding: 6px 14px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            font-family: 'JetBrains Mono', monospace; letter-spacing: 1px;
+            transition: 0.25s; backdrop-filter: blur(10px);
+        }
+        #lang-btn:hover { background: var(--accent-cyan); color: #000; }
         @media (max-width:880px) {
             .main-wrapper { grid-template-columns:1fr; }
             .sidebar { position:static; }
             .research-grid, .courses-grid, .awards-grid, .project-highlights { grid-template-columns:1fr; }
+            body { cursor: auto; }
+            #cdot, #cring { display: none; }
         }
     </style>
 </head>
 <body>
+
+<canvas id="star-canvas"></canvas>
+<div id="cdot"></div>
+<div id="cring"></div>
 
 <div class="main-wrapper">
     <aside class="sidebar">
         <div class="profile-box">
             <div class="avatar">YC</div>
             <h1 class="name-title">Yiyang Chen</h1>
-            <p class="name-sub">ChemE @ ECUST &nbsp;·&nbsp; CS & AI @ UCR<br>Class of 2026</p>
-            <div class="aifs-badge">
-                <div class="dot"></div>
-                AI for Science Researcher
-            </div>
+            <p class="name-sub"><span class="en">ChemE @ ECUST &nbsp;&middot;&nbsp; CS &amp; AI @ UCR</span><span class="zh">华东理工大学化工 &nbsp;&middot;&nbsp; UCR 计算机与AI</span><br><span class="en">Class of 2026</span><span class="zh">2026届</span></p>
+            <div class="aifs-badge"><div class="dot"></div><span class="en">AI for Science Researcher</span><span class="zh">AI for Science 研究者</span></div>
             <div class="stat-bar">
                 <div class="stat-item"><span class="stat-num">3.61</span><span class="stat-lab">GPA</span></div>
                 <div class="stat-div"></div>
-                <div class="stat-item"><span class="stat-num">8×A+</span><span class="stat-lab">CS Courses</span></div>
+                <div class="stat-item"><span class="stat-num">10&times;A+</span><span class="stat-lab"><span class="en">CS Courses</span><span class="zh">CS课程</span></span></div>
                 <div class="stat-div"></div>
-                <div class="stat-item"><span class="stat-num">2026</span><span class="stat-lab">Class</span></div>
+                <div class="stat-item"><span class="stat-num">2026</span><span class="stat-lab"><span class="en">Class</span><span class="zh">届</span></span></div>
             </div>
-            <a href="/cdn-cgi/l/email-protection#31485259545f00050301714452431f545544" class="info-link" id="emailLink" data-tooltip="Click to copy email"><i class="fas fa-envelope"></i> <span class="__cf_email__" data-cfemail="e29b818a878cd3d6d0d2a2978190cc878697">[email&#160;protected]</span></a>
+            <a href="mailto:ychen1420@ucr.edu" class="info-link" id="emailLink" data-tooltip="Click to copy email"><i class="fas fa-envelope"></i> ychen1420@ucr.edu</a>
             <a href="https://github.com/cyy-07" target="_blank" class="info-link"><i class="fab fa-github"></i> github.com/cyy-07</a>
             <a href="https://www.linkedin.com/in/yiyang-chen-379495376" target="_blank" class="info-link"><i class="fab fa-linkedin"></i> linkedin/yiyang-chen</a>
-            <div class="info-link"><i class="fas fa-map-marker-alt"></i> Riverside, CA (OPT eligible Jun 2026)</div>
-            <div class="info-link"><i class="fas fa-language"></i> CET-4: 558 &nbsp;·&nbsp; CET-6: 480</div>
-            <a href="#" class="btn-cv"><i class="fas fa-download" style="margin-right:6px;"></i> Download CV</a>
+            <div class="info-link"><i class="fas fa-map-marker-alt"></i> <span class="en">Riverside, CA (OPT eligible Jun 2026)</span><span class="zh">加州河滨市 (2026年6月OPT)</span></div>
+            <div class="info-link"><i class="fas fa-language"></i> <span class="en">CET-4: 558 &nbsp;&middot;&nbsp; CET-6: 480</span><span class="zh">四级: 558 &nbsp;&middot;&nbsp; 六级: 480</span></div>
+            <a href="#" class="btn-cv"><i class="fas fa-download" style="margin-right:6px;"></i> <span class="en">Download CV</span><span class="zh">下载简历</span></a>
             <div class="tent-controls">
-                <button id="build-tent"><i class="fas fa-campground"></i> Build Tent</button>
-                <button id="clear-tents"><i class="fas fa-eraser"></i> Clear</button>
+                <button id="build-tent"><i class="fas fa-campground"></i> <span class="en">Build Tent</span><span class="zh">搭帐篷</span></button>
+                <button id="clear-tents"><i class="fas fa-eraser"></i> <span class="en">Clear</span><span class="zh">清除</span></button>
             </div>
             <div class="wellbeing-controls">
-                <button id="breathing-btn" class="wellbeing-btn"><i class="fas fa-wind"></i> Breathe</button>
-                <button id="snow-btn" class="wellbeing-btn"><i class="fas fa-snowflake"></i> Snow</button>
-                <button id="gentle-exit-btn" class="wellbeing-btn"><i class="fas fa-moon"></i> Rest</button>
+                <button id="breathing-btn" class="wellbeing-btn"><i class="fas fa-wind"></i> <span class="en">Breathe</span><span class="zh">呼吸</span></button>
+                <button id="snow-btn" class="wellbeing-btn"><i class="fas fa-snowflake"></i> <span class="en">Snow</span><span class="zh">下雪</span></button>
+                <button id="gentle-exit-btn" class="wellbeing-btn" style="grid-column:1/2;"><i class="fas fa-moon"></i> <span class="en">Rest</span><span class="zh">休息</span></button>
+                <button id="star-toggle-btn" class="wellbeing-btn" style="grid-column:2/3;border-color:var(--accent-cyan);color:var(--accent-cyan);"><i class="fas fa-star"></i> <span class="en">Stars</span><span class="zh">星空</span></button>
             </div>
         </div>
-
         <div class="mini-card">
-            <div class="mini-card-title" style="color: var(--accent-purple);">
-                <i class="fas fa-microchip"></i> Tech Stack
-            </div>
+            <div class="mini-card-title" style="color:var(--accent-purple);"><i class="fas fa-microchip"></i> <span class="en"><span class="en">Tech Stack</span><span class="zh">技术栈</span></span><span class="zh">技术栈</span></div>
             <div>
                 <span class="tag">Python</span><span class="tag">C++</span><span class="tag">R</span>
                 <span class="tag">MATLAB</span><span class="tag">PyTorch</span><span class="tag">PyG</span>
@@ -639,24 +493,20 @@
 
     <main class="content">
         <div class="tab-nav">
-            <div class="tab-btn active" data-tab="home" onclick="switchTab('home', event)">Home</div>
-            <div class="tab-btn" data-tab="about" onclick="switchTab('about', event)">About</div>
-            <div class="tab-btn" data-tab="education" onclick="switchTab('education', event)">Education</div>
-            <div class="tab-btn" data-tab="courses" onclick="switchTab('courses', event)">Courses</div>
-            <div class="tab-btn" data-tab="research" onclick="switchTab('research', event)">Research</div>
-            <div class="tab-btn" data-tab="projects" onclick="switchTab('projects', event)">
-                Projects&nbsp;<span style="display:inline-flex;align-items:center;background:rgba(42,255,160,0.15);border:1px solid rgba(42,255,160,0.3);border-radius:4px;padding:1px 5px;font-size:0.58rem;color:var(--accent-green);letter-spacing:0.5px;vertical-align:middle;margin-left:2px;">NEW</span>
-            </div>
+            <div class="tab-btn active" data-tab="home" onclick="switchTab('home',event)"><span class="en">Home</span><span class="zh">首页</span></div>
+            <div class="tab-btn" data-tab="about" onclick="switchTab('about',event)"><span class="en">About</span><span class="zh">关于我</span></div>
+            <div class="tab-btn" data-tab="education" onclick="switchTab('education',event)"><span class="en">Education</span><span class="zh">教育背景</span></div>
+            <div class="tab-btn" data-tab="courses" onclick="switchTab('courses',event)"><span class="en">Courses</span><span class="zh">课程成绩</span></div>
+            <div class="tab-btn" data-tab="research" onclick="switchTab('research',event)"><span class="en">Research</span><span class="zh">科研经历</span></div>
+            <div class="tab-btn" data-tab="projects" onclick="switchTab('projects',event)"><span class="en">Projects</span><span class="zh">项目</span>&nbsp;<span style="display:inline-flex;align-items:center;background:rgba(42,255,160,0.15);border:1px solid rgba(42,255,160,0.3);border-radius:4px;padding:1px 5px;font-size:0.58rem;color:var(--accent-green);letter-spacing:0.5px;vertical-align:middle;margin-left:2px;">NEW</span></div>
         </div>
 
-        <!-- ========== HOME TAB ========== -->
+        <!-- HOME -->
         <div id="home" class="tab-content active">
             <div class="hero-banner">
-                <div class="hero-label">Portfolio · 2026</div>
-                <h1 class="hero-h1">Where Chemistry<br>Meets Machine Learning</h1>
-                <p class="hero-desc">
-                    Dual-trained in Chemical Engineering (ECUST) and Computer Science (UCR), I build physics-informed AI systems that accelerate scientific discovery — from molecular solubility prediction with GNNs to multi-objective industrial optimization. Targeting a PhD in AI for Science starting Fall 2026.
-                </p>
+                <div class="hero-label"><span class="en">Portfolio &middot; 2026</span><span class="zh">个人主页 &middot; 2026</span></div>
+                <h1 class="hero-h1"><span class="en">Where Chemistry<br>Meets Machine Learning</span><span class="zh">化学工程与<br>机器学习的交汇</span></h1>
+                <p class="hero-desc"><span class="en">Dual-trained in Chemical Engineering (ECUST) and Computer Science (UCR), I build physics-informed AI systems that accelerate scientific discovery &mdash; from molecular solubility prediction with GNNs to multi-objective industrial optimization. Targeting a PhD in AI for Science starting Fall 2026.</span><span class="zh">化学工程（华东理工）与计算机科学（加州大学河滨分校）双背景，我构建融合物理约束的AI系统加速科学发现——从图神经网络预测分子溶解度到多目标工业优化。目标：2026年秋季入读AI for Science方向博士项目。</span></p>
                 <div class="hero-tags">
                     <span class="hero-tag cyan">Physics-Informed ML</span>
                     <span class="hero-tag purple">Graph Neural Networks</span>
@@ -664,252 +514,187 @@
                     <span class="hero-tag cyan">Molecular Systems</span>
                     <span class="hero-tag purple">MINLP Optimization</span>
                 </div>
-                <div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;">
-                    <button class="hero-cta-btn cyan-btn" onclick="switchTab('research', event)">
-                        <i class="fas fa-flask"></i> View Research
-                    </button>
-                    <button class="hero-cta-btn outline-btn" onclick="switchTab('projects', event)">
-                        <i class="fas fa-rocket"></i> View Projects
-                    </button>
-                    <button class="hero-cta-btn outline-btn" onclick="switchTab('about', event)">
-                        <i class="fas fa-user"></i> About Me
-                    </button>
+                <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;">
+                    <button class="hero-cta-btn cyan-btn" onclick="switchTab('research',event)"><i class="fas fa-flask"></i> <span class="en">View Research</span><span class="zh">查看科研</span></button>
+                    <button class="hero-cta-btn outline-btn" onclick="switchTab('projects',event)"><i class="fas fa-rocket"></i> <span class="en">View Projects</span><span class="zh">查看项目</span></button>
+                    <button class="hero-cta-btn outline-btn" onclick="switchTab('about',event)"><i class="fas fa-user"></i> <span class="en">About Me</span><span class="zh">关于我</span></button>
                 </div>
             </div>
-
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-purple"><i class="fas fa-flask"></i> Research Spotlight</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-purple"><i class="fas fa-flask"></i> <span class="en">Research Spotlight</span><span class="zh">科研亮点</span></div>
                 <div class="research-grid">
                     <div class="research-item cyan">
-                        <div class="ri-icon">🧪</div>
-                        <div class="ri-title">Molecular Solubility GNN</div>
-                        <div class="ri-desc">Multi-modal fusion GNN (~5.7M params, 5-fold ensemble) embedding Van't Hoff thermodynamic constraints as physics-informed auxiliary loss. R²=0.968, RMSE=0.244.</div>
-                        <span class="ri-badge ongoing">● Ongoing · UCR</span>
+                        <div class="ri-icon">&#129514;</div>
+                        <div class="ri-title"><span class="en">Molecular Solubility GNN</span><span class="zh">分子溶解度图神经网络</span></div>
+                        <div class="ri-desc">Multi-modal fusion GNN (~5.7M params, 5-fold ensemble) embedding Van&rsquo;t Hoff thermodynamic constraints as physics-informed auxiliary loss. R&sup2;=0.968, RMSE=0.244.</div>
+                        <span class="ri-badge ongoing"><span class="en">&#9679; Ongoing &middot; UCR</span><span class="zh">&#9679; 进行中 &middot; UCR</span></span>
                     </div>
                     <div class="research-item purple">
-                        <div class="ri-icon">⚗️</div>
-                        <div class="ri-title">Ethylene Furnace Optimization</div>
-                        <div class="ri-desc">Multi-objective MINLP framework achieving 38.6% CO₂ reduction via ML surrogate models and dynamic decoking scheduling across multi-furnace systems.</div>
-                        <span class="ri-badge under-review">📄 Under Review · Fuel Journal</span>
+                        <div class="ri-icon">&#9879;</div>
+                        <div class="ri-title"><span class="en">Ethylene Furnace Optimization</span><span class="zh">乙烯裂解炉多目标优化</span></div>
+                        <div class="ri-desc">Multi-objective MINLP framework achieving 38.6% CO&#8322; reduction via ML surrogate models and dynamic decoking scheduling across multi-furnace systems.</div>
+                        <span class="ri-badge under-review"><span class="en">&#128196; Under Review &middot; Fuel Journal</span><span class="zh">&#128196; 审稿中 &middot; Fuel期刊</span></span>
                     </div>
                     <div class="research-item" style="border-top:2px solid rgba(42,255,160,0.3);">
-                        <div class="ri-icon">🔬</div>
-                        <div class="ri-title">Multiphase Catalytic Reactions (ML)</div>
+                        <div class="ri-icon">&#128300;</div>
+                        <div class="ri-title"><span class="en">Multiphase Catalytic Reactions (ML)</span><span class="zh">多相催化反应（机器学习）</span></div>
                         <div class="ri-desc">Led Python implementation of volcano plot generation for high-throughput catalyst screening and descriptor identification. Applied ML to accelerate reaction pathway discovery.</div>
-                        <span class="ri-badge" style="background:rgba(42,255,160,0.07);color:var(--accent-green);border:1px solid rgba(42,255,160,0.2);">✓ Completed · ECUST 2024</span>
+                        <span class="ri-badge" style="background:rgba(42,255,160,0.07);color:var(--accent-green);border:1px solid rgba(42,255,160,0.2);"><span class="en">&#10003; Completed &middot; ECUST 2024</span><span class="zh">&#10003; 已完成 &middot; 华理 2024</span></span>
                     </div>
                     <div class="research-item" style="border-top:2px solid rgba(255,179,71,0.3);">
-                        <div class="ri-icon">📊</div>
-                        <div class="ri-title">Industrial Carbon Quota Optimization</div>
+                        <div class="ri-icon">&#128202;</div>
+                        <div class="ri-title"><span class="en">Industrial Carbon Quota Optimization</span><span class="zh">工业碳配额优化</span></div>
                         <div class="ri-desc">Developed carbon quota allocation algorithms using Genetic Algorithms for multi-plant industrial systems. Balancing emissions constraints with production efficiency.</div>
-                        <span class="ri-badge" style="background:rgba(255,179,71,0.07);color:var(--accent-amber);border:1px solid rgba(255,179,71,0.2);">● Ongoing · ECUST 2025</span>
+                        <span class="ri-badge" style="background:rgba(255,179,71,0.07);color:var(--accent-amber);border:1px solid rgba(255,179,71,0.2);"><span class="en">&#9679; Ongoing &middot; ECUST 2025</span><span class="zh">&#9679; 进行中 &middot; 华理 2025</span></span>
                     </div>
                 </div>
             </div>
-
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-green"><i class="fas fa-award"></i> Awards & Honors</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-green"><i class="fas fa-award"></i> <span class="en">Awards &amp; Honors</span><span class="zh">奖项荣誉</span></div>
                 <div class="awards-grid">
-                    <div class="award-item">
-                        <div class="award-name">National Energy Economics Competition</div>
-                        <div class="award-detail">First Prize &nbsp;·&nbsp; 2025</div>
-                    </div>
-                    <div class="award-item">
-                        <div class="award-name">Mathematical Modeling Competition</div>
-                        <div class="award-detail">Provincial Third Prize &nbsp;·&nbsp; 2024</div>
-                    </div>
-                    <div class="award-item">
-                        <div class="award-name">Academic Scholarship</div>
-                        <div class="award-detail">Third Class &nbsp;·&nbsp; 2022–2023, 2024–2025</div>
-                    </div>
-                    <div class="award-item">
-                        <div class="award-name">Mathematics Competition</div>
-                        <div class="award-detail">Provincial Third Prize &nbsp;·&nbsp; 2024</div>
-                    </div>
+                    <div class="award-item"><div class="award-name"><span class="en">National Energy Economics Competition</span><span class="zh">全国能源经济竞赛</span></div><div class="award-detail"><span class="en">First Prize &nbsp;&middot;&nbsp; 2025</span><span class="zh">一等奖 &nbsp;&middot;&nbsp; 2025</span></div></div>
+                    <div class="award-item"><div class="award-name"><span class="en">Mathematical Modeling Competition</span><span class="zh">数学建模竞赛</span></div><div class="award-detail"><span class="en">Provincial Third Prize &nbsp;&middot;&nbsp; 2024</span><span class="zh">省级三等奖 &nbsp;&middot;&nbsp; 2024</span></div></div>
+                    <div class="award-item"><div class="award-name"><span class="en">Academic Scholarship</span><span class="zh">学业奖学金</span></div><div class="award-detail"><span class="en">Third Class &nbsp;&middot;&nbsp; 2022&ndash;2023, 2024&ndash;2025</span><span class="zh">三等奖学金 &nbsp;&middot;&nbsp; 2022&ndash;2023、2024&ndash;2025</span></div></div>
+                    <div class="award-item"><div class="award-name"><span class="en">Mathematics Competition</span><span class="zh">数学竞赛</span></div><div class="award-detail"><span class="en">Provincial Third Prize &nbsp;&middot;&nbsp; 2024</span><span class="zh">省级三等奖 &nbsp;&middot;&nbsp; 2024</span></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== ABOUT TAB ========== -->
+        <!-- ABOUT -->
         <div id="about" class="tab-content">
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-cyan"><i class="fas fa-user-astronaut"></i> About Me</div>
-                <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.95; margin:0 0 18px 0;">
-                    I'm <strong style="color:var(--text-primary)">Yiyang Chen</strong>, a final-year student with a dual background in Chemical Engineering (ECUST, Shanghai) and Computer Science & AI (UC Riverside). I grew up in Fujian, China, ranked in the top 3% of 218,000 students in the college entrance exam — but what matters more to me is the direction I've been building since.
-                </p>
-                <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.95; margin:0 0 18px 0;">
-                    My research sits at the intersection of <strong style="color:var(--accent-cyan)">machine learning and natural science</strong>. I believe the most exciting frontier right now is teaching AI to respect physical laws — not just pattern-match on data. This led me to build physics-informed GNNs that embed thermodynamic constraints (Van't Hoff), and MINLP systems that jointly optimize carbon emissions and industrial efficiency.
-                </p>
-                <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.95; margin:0;">
-                    Outside research, I like hiking (hence the tent button 🏕), stargazing, and occasionally reminding myself that rest is productive. I'm currently applying to PhD programs in <strong style="color:var(--accent-green)">AI for Science / Computational Chemistry / Scientific ML</strong> for Fall 2026, and am eligible for OPT upon graduation in June 2026.
-                </p>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-cyan"><i class="fas fa-user-astronaut"></i> <span class="en">About Me</span><span class="zh">关于我</span></div>
+                <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.95;margin:0 0 18px 0;"><span class="en">I&rsquo;m <strong style="color:var(--text-primary)">Yiyang Chen</strong>, a final-year student</span><span class="zh">我叫<strong style="color:var(--text-primary)">陈祎洋</strong>，是一名大四学生</span> <span class="en">with a dual background in Chemical Engineering (ECUST, Shanghai) and Computer Science &amp; AI (UC Riverside). I grew up in Fujian, China, ranked in the top 3% of 218,000 students in the college entrance exam &mdash; but what matters more to me is the direction I&rsquo;ve been building since.</span><span class="zh">在华东理工大学主修化学工程，同时在加州大学河滨分校修读计算机科学与AI。成长于福建，高考在21.8万考生中位列前3%——但对我而言更重要的，是此后一直在构建的方向。</span></p>
+                <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.95;margin:0 0 18px 0;"><span class="en">My research sits at the intersection of <strong style="color:var(--accent-cyan)">machine learning and natural science</strong>. I believe the most exciting frontier right now is teaching AI to respect physical laws &mdash; not just pattern-match on data. This led me to build physics-informed GNNs that embed thermodynamic constraints (Van&rsquo;t Hoff), and MINLP systems that jointly optimize carbon emissions and industrial efficiency.</span><span class="zh">我的研究聚焦于<strong style="color:var(--accent-cyan)">机器学习与自然科学</strong>的交叉领域。我相信当下最令人兴奋的前沿方向，是让AI学会遵循物理规律——而不仅仅是拟合数据。这驱使我构建了嵌入热力学约束（Van't Hoff方程）的物理信息图神经网络，以及同时优化碳排放与工业效率的MINLP系统。</span></p>
+                <p style="font-size:0.85rem;color:var(--text-secondary);line-height:1.95;margin:0;"><span class="en">Outside research, I like hiking (hence the tent button &#127957;), stargazing, and occasionally reminding myself that rest is productive. I&rsquo;m currently applying to PhD programs in <strong style="color:var(--accent-green)">AI for Science / Computational Chemistry / Scientific ML</strong> for Fall 2026, and am eligible for OPT upon graduation in June 2026.</span><span class="zh">科研之外，我喜欢徒步（所以有了那个搭帐篷按钮 &#127957;）、观星，偶尔提醒自己休息也是生产力。目前我正在申请2026年秋季入学的博士项目，方向为<strong style="color:var(--accent-green)">AI for Science / 计算化学 / 科学机器学习</strong>，2026年6月毕业后可立即开始OPT。</span></p>
             </div>
-
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-purple">&#9670; Skills &amp; Proficiency</div>
-                <div class="sk-group-label" style="color:var(--accent-cyan);">Machine Learning &amp; AI</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-purple">&#9670; <span class="en">Skills &amp; Proficiency</span><span class="zh">技能熟练度</span></div>
+                <div class="sk-group-label" style="color:var(--accent-cyan);"><span class="en">Machine Learning &amp; AI</span><span class="zh">机器学习与AI</span></div>
                 <div class="sk-grid">
-                    <div class="sk-item"><span class="sk-name">Graph Neural Networks</span><span class="sk-stars" data-stars="5" data-color="#00d2ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">Physics-Informed ML</span><span class="sk-stars" data-stars="4.5" data-color="#00d2ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">PyTorch / Deep Learning</span><span class="sk-stars" data-stars="4" data-color="#00d2ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">Scikit-learn / Classical ML</span><span class="sk-stars" data-stars="4" data-color="#00d2ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">GradCAM / Interpretability</span><span class="sk-stars" data-stars="3.5" data-color="#00d2ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">Transformer / LLM</span><span class="sk-stars" data-stars="3" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Graph Neural Networks</span><span class="zh">图神经网络</span></span><span class="sk-stars" data-stars="5" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Physics-Informed ML</span><span class="zh">物理信息机器学习</span></span><span class="sk-stars" data-stars="4.5" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">PyTorch / Deep Learning</span><span class="zh">PyTorch / 深度学习</span></span><span class="sk-stars" data-stars="4" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Scikit-learn / Classical ML</span><span class="zh">Scikit-learn / 传统机器学习</span></span><span class="sk-stars" data-stars="4" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">GradCAM / Interpretability</span><span class="zh">GradCAM / 可解释性</span></span><span class="sk-stars" data-stars="3.5" data-color="#00d2ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Transformer / LLM</span><span class="zh">Transformer / 大语言模型</span></span><span class="sk-stars" data-stars="3" data-color="#00d2ff"></span></div>
                 </div>
-                <div class="sk-group-label" style="color:var(--accent-purple); margin-top:18px;">Programming</div>
+                <div class="sk-group-label" style="color:var(--accent-purple);margin-top:18px;"><span class="en">Programming</span><span class="zh">编程语言</span></div>
                 <div class="sk-grid">
                     <div class="sk-item"><span class="sk-name">Python</span><span class="sk-stars" data-stars="5" data-color="#a259ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">R (Data Analysis)</span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">R (Data Analysis)</span><span class="zh">R（数据分析）</span></span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
                     <div class="sk-item"><span class="sk-name">C / C++</span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
                     <div class="sk-item"><span class="sk-name">MATLAB</span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">SQL / Data Wrangling</span><span class="sk-stars" data-stars="3" data-color="#a259ff"></span></div>
-                    <div class="sk-item"><span class="sk-name">Git / Version Control</span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">SQL / Data Wrangling</span><span class="zh">SQL / 数据处理</span></span><span class="sk-stars" data-stars="3" data-color="#a259ff"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Git / Version Control</span><span class="zh">Git / 版本控制</span></span><span class="sk-stars" data-stars="3.5" data-color="#a259ff"></span></div>
                 </div>
-                <div class="sk-group-label" style="color:var(--accent-green); margin-top:18px;">Domain Knowledge</div>
+                <div class="sk-group-label" style="color:var(--accent-green);margin-top:18px;"><span class="en">Domain Knowledge</span><span class="zh">专业领域</span></div>
                 <div class="sk-grid">
-                    <div class="sk-item"><span class="sk-name">Chemical Engineering</span><span class="sk-stars" data-stars="4.5" data-color="#2affa0"></span></div>
-                    <div class="sk-item"><span class="sk-name">Thermodynamics &amp; Kinetics</span><span class="sk-stars" data-stars="4" data-color="#2affa0"></span></div>
-                    <div class="sk-item"><span class="sk-name">MINLP Optimization</span><span class="sk-stars" data-stars="4" data-color="#2affa0"></span></div>
-                    <div class="sk-item"><span class="sk-name">Molecular Modeling / RDKit</span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
-                    <div class="sk-item"><span class="sk-name">Aspen Plus / Process Sim</span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
-                    <div class="sk-item"><span class="sk-name">Scientific Writing</span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Chemical Engineering</span><span class="zh">化学工程</span></span><span class="sk-stars" data-stars="4.5" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Thermodynamics &amp; Kinetics</span><span class="zh">热力学与反应动力学</span></span><span class="sk-stars" data-stars="4" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">MINLP Optimization</span><span class="zh">MINLP优化</span></span><span class="sk-stars" data-stars="4" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Molecular Modeling / RDKit</span><span class="zh">分子建模 / RDKit</span></span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Aspen Plus / Process Sim</span><span class="zh">Aspen Plus / 流程模拟</span></span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
+                    <div class="sk-item"><span class="sk-name"><span class="en">Scientific Writing</span><span class="zh">学术写作</span></span><span class="sk-stars" data-stars="3.5" data-color="#2affa0"></span></div>
                 </div>
             </div>
-
-            <div class="card" style="border-radius:16px; border-color: rgba(42,255,160,0.2); background: linear-gradient(135deg, rgba(42,255,160,0.03), var(--bg-card));">
-                <div class="section-title s-green"><i class="fas fa-rocket"></i> Graduate Goals</div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
-                    <div class="goal-item">
-                        <div class="goal-icon">🎯</div>
-                        <div class="goal-title">Target Degree</div>
-                        <div class="goal-body">PhD in AI for Science, Scientific ML, or Computational Chemistry — Fall 2026</div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-icon">🔬</div>
-                        <div class="goal-title">Research Direction</div>
-                        <div class="goal-body">Physics-informed ML · GNNs for molecular systems · AI-accelerated materials & drug discovery</div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-icon">🌐</div>
-                        <div class="goal-title">Work Authorization</div>
-                        <div class="goal-body">OPT eligible upon graduation (June 2026) · Up to 3 years STEM OPT extension</div>
-                    </div>
-                    <div class="goal-item">
-                        <div class="goal-icon">📍</div>
-                        <div class="goal-title">Current Location</div>
-                        <div class="goal-body">Riverside, CA · Open to relocation for PhD program</div>
-                    </div>
+            <div class="card" style="border-radius:16px;border-color:rgba(42,255,160,0.2);background:linear-gradient(135deg,rgba(42,255,160,0.03),var(--bg-card));">
+                <div class="section-title s-green"><i class="fas fa-rocket"></i> <span class="en">Graduate Goals</span><span class="zh">读博目标</span></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    <div class="goal-item"><div class="goal-icon">&#127919;</div><div class="goal-title"><span class="en">Target Degree</span><span class="zh">目标学位</span></div><div class="goal-body"><span class="en">PhD in AI for Science, Scientific ML, or Computational Chemistry &mdash; Fall 2026</span><span class="zh">AI for Science / 科学机器学习 / 计算化学方向博士 &mdash; 2026年秋</span></div></div>
+                    <div class="goal-item"><div class="goal-icon">&#128300;</div><div class="goal-title"><span class="en">Research Direction</span><span class="zh">研究方向</span></div><div class="goal-body"><span class="en">Physics-informed ML &middot; GNNs for molecular systems &middot; AI-accelerated materials &amp; drug discovery</span><span class="zh">物理信息ML &middot; 分子系统图神经网络 &middot; AI驱动材料与药物发现</span></div></div>
+                    <div class="goal-item"><div class="goal-icon">&#127758;</div><div class="goal-title"><span class="en">Work Authorization</span><span class="zh">工作许可</span></div><div class="goal-body"><span class="en">OPT eligible upon graduation (June 2026) &middot; Up to 3 years STEM OPT extension</span><span class="zh">2026年6月毕业后可OPT工作 &middot; STEM专业最长3年延期</span></div></div>
+                    <div class="goal-item"><div class="goal-icon">&#128205;</div><div class="goal-title"><span class="en">Current Location</span><span class="zh">当前位置</span></div><div class="goal-body"><span class="en">Riverside, CA &middot; Open to relocation for PhD program</span><span class="zh">加州河滨市 &middot; 愿意为博士项目搬迁</span></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== EDUCATION TAB ========== -->
+        <!-- EDUCATION -->
         <div id="education" class="tab-content">
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-cyan"><i class="fas fa-graduation-cap"></i> Education</div>
-                <p style="font-size:0.72rem; color:var(--text-secondary); margin: -10px 0 20px 0;">Most recent first ↑</p>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-cyan"><i class="fas fa-graduation-cap"></i> <span class="en">Education</span><span class="zh">教育背景</span></div>
+                <p style="font-size:0.72rem;color:var(--text-secondary);margin:-10px 0 20px 0;"><span class="en">Most recent first &uarr;</span><span class="zh">最新在前 &uarr;</span></p>
                 <div class="timeline-item">
-                    <div class="header-flex">
-                        <span>University of California, Riverside</span>
-                        <span class="date-tag">Sep 2025 – Jun 2026</span>
-                    </div>
-                    <div class="sub-header">Exchange Student · Graduate Preparation Program (AI & Data Science)</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.7; margin: 8px 0;">
-                        Focused entirely on AI and CS coursework under faculty supervision. Conducting research on physics-informed graph neural networks for molecular property prediction and adversarial robustness of LLMs.
-                    </p>
+                    <div class="header-flex"><span>University of California, Riverside</span><span class="date-tag">Sep 2025 &ndash; Jun 2026</span></div>
+                    <div class="sub-header"><span class="en">Exchange Student &middot; Graduate Preparation Program (AI &amp; Data Science)</span><span class="zh">交换生 &middot; 研究生预备项目（AI与数据科学）</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;margin:8px 0;"><span class="en">Focused entirely on AI and CS coursework under faculty supervision. Conducting research on physics-informed graph neural networks for molecular property prediction and adversarial robustness of LLMs.</span><span class="zh">在教授指导下专注于AI和CS课程学习，同时开展物理信息图神经网络预测分子性质及大语言模型对抗鲁棒性相关研究。</span></p>
                     <div>
-                        <div class="grade-pill"><span>Data Structures & Algorithms</span><span class="val">A+</span></div>
-                        <div class="grade-pill"><span>Intro to ML & Data Mining</span><span class="val">A+</span></div>
+                        <div class="grade-pill"><span>Data Structures &amp; Algorithms</span><span class="val">A+</span></div>
+                        <div class="grade-pill"><span>Intro to ML &amp; Data Mining</span><span class="val">A+</span></div>
                         <div class="grade-pill"><span>Intro to AI</span><span class="val">A+</span></div>
                         <div class="grade-pill"><span>Deep Learning</span><span class="val">A+</span></div>
-                        <div class="grade-pill"><span>Discrete Mathematics</span><span class="val">A</span></div>
-                        <div class="grade-pill"><span>C++ for Programmers</span><span class="val">A</span></div>
+                        <div class="grade-pill"><span>Discrete Mathematics</span><span class="val">A+</span></div>
+                        <div class="grade-pill"><span>C++ for Programmers</span><span class="val">A+</span></div>
                     </div>
                 </div>
                 <div class="timeline-item">
-                    <div class="header-flex">
-                        <span>University of Texas at Austin</span>
-                        <span class="date-tag">Jul 2024 – Aug 2024</span>
-                    </div>
-                    <div class="sub-header">Summer Visiting Student</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.7; margin: 8px 0;">
-                        Intensive summer program. Completed Data Analysis (R), Python Programming, and Academic Writing — all with A grades.
-                    </p>
+                    <div class="header-flex"><span>University of Texas at Austin</span><span class="date-tag">Jul 2024 &ndash; Aug 2024</span></div>
+                    <div class="sub-header"><span class="en">Summer Visiting Student</span><span class="zh">暑期访问学生</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;margin:8px 0;"><span class="en">Intensive summer program. Completed Data Analysis (R), Python Programming, and Academic Writing &mdash; all with A grades.</span><span class="zh">密集暑期课程，完成数据分析（R语言）、Python编程和学术写作三门课，均获A。</span></p>
                 </div>
                 <div class="timeline-item">
-                    <div class="header-flex">
-                        <span>East China University of Science and Technology</span>
-                        <span class="date-tag">Sep 2022 – Jun 2026</span>
-                    </div>
-                    <div class="sub-header">B.Eng. in Chemical Engineering · GPA 3.61 / 4.00 · Avg Score 85.7</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.7; margin: 8px 0;">
-                        Built a dual foundation in chemical engineering and computer science. CS-heavy curriculum alongside rigorous science and engineering fundamentals.
-                    </p>
+                    <div class="header-flex"><span>East China University of Science and Technology</span><span class="date-tag">Sep 2022 &ndash; Jun 2026</span></div>
+                    <div class="sub-header"><span class="en">B.Eng. in Chemical Engineering &middot; GPA 3.61 / 4.00 &middot; Avg Score 85.7</span><span class="zh">化学工程工学学士 &middot; GPA 3.61 / 4.00 &middot; 均分 85.7</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.7;margin:8px 0;"><span class="en">Built a dual foundation in chemical engineering and computer science. CS-heavy curriculum alongside rigorous science and engineering fundamentals.</span><span class="zh">构建化学工程与计算机科学的双重知识体系，在扎实工程基础之上兼修大量CS课程。</span></p>
                     <div>
                         <div class="grade-pill"><span>Big Data Algorithms</span><span class="val">100</span></div>
-                        <div class="grade-pill"><span>AI Language & Ethics</span><span class="val">100</span></div>
+                        <div class="grade-pill"><span>AI Language &amp; Ethics</span><span class="val">100</span></div>
                         <div class="grade-pill"><span>Advanced Mathematics II</span><span class="val">98</span></div>
                         <div class="grade-pill"><span>Data Structures</span><span class="val">94</span></div>
-                        <div class="grade-pill"><span>Network & Cloud Computing</span><span class="val">92</span></div>
+                        <div class="grade-pill"><span>Network &amp; Cloud Computing</span><span class="val">92</span></div>
                         <div class="grade-pill"><span>Simulation of ChemE Safety</span><span class="val">92</span></div>
                         <div class="grade-pill"><span>Separation Engineering</span><span class="val">92</span></div>
-                        <div class="grade-pill"><span>AI Tech & Applications</span><span class="val">91</span></div>
+                        <div class="grade-pill"><span>AI Tech &amp; Applications</span><span class="val">91</span></div>
                         <div class="grade-pill"><span>ChemE Principles</span><span class="val">91</span></div>
-                        <div class="grade-pill"><span>Probability & Stats</span><span class="val">90</span></div>
+                        <div class="grade-pill"><span>Probability &amp; Stats</span><span class="val">90</span></div>
                         <div class="grade-pill"><span>OS Principles</span><span class="val">85</span></div>
                         <div class="grade-pill"><span>Information Retrieval</span><span class="val">85</span></div>
                     </div>
                 </div>
                 <div class="timeline-item dim">
-                    <div class="header-flex">
-                        <span>Fujian Gaokao (College Entrance Exam)</span>
-                        <span class="date-tag">2022</span>
-                    </div>
-                    <div class="sub-header" style="color: var(--text-secondary);">Ranked 6,802 / 218,000 students · Top 3%</div>
-                    <div class="quote-block">
-                        "While I was not always the most disciplined student, I gradually learned how to build systems for myself and take ownership of my growth."
-                    </div>
+                    <div class="header-flex"><span>Fujian Gaokao (College Entrance Exam)</span><span class="date-tag">2022</span></div>
+                    <div class="sub-header" style="color:var(--text-secondary);"><span class="en">Ranked 6,802 / 218,000 students &middot; Top 3%</span><span class="zh">福建高考 21.8万人中排名第6802 &middot; 前3%</span></div>
+                    <div class="quote-block">&ldquo;While I was not always the most disciplined student, I gradually learned how to build systems for myself and take ownership of my growth.&rdquo;</div>
                 </div>
             </div>
         </div>
 
-        <!-- ========== COURSES TAB ========== -->
+        <!-- COURSES -->
         <div id="courses" class="tab-content">
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-cyan"><i class="fas fa-laptop-code"></i> Computer Science Coursework</div>
-                <div class="courses-source">UC Riverside &nbsp;·&nbsp; 2025–2026</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-cyan"><i class="fas fa-laptop-code"></i> <span class="en">Computer Science Coursework</span><span class="zh">计算机科学课程</span></div>
+                <div class="courses-source"><span class="en">UC Riverside &nbsp;&middot;&nbsp; 2025&ndash;2026</span><span class="zh">加州大学河滨分校 &nbsp;&middot;&nbsp; 2025&ndash;2026</span></div>
                 <div class="courses-grid">
-                    <div class="course-item"><span class="course-name">Intro to ML & Data Mining</span><span class="course-grade grade-ap">A+</span></div>
+                    <div class="course-item"><span class="course-name">Intro to ML &amp; Data Mining</span><span class="course-grade grade-ap">A+</span></div>
                     <div class="course-item"><span class="course-name">Deep Learning</span><span class="course-grade grade-ap">A+</span></div>
                     <div class="course-item"><span class="course-name">Intro to Artificial Intelligence</span><span class="course-grade grade-ap">A+</span></div>
-                    <div class="course-item"><span class="course-name">Data Structures & Algorithms</span><span class="course-grade grade-ap">A+</span></div>
-                    <div class="course-item"><span class="course-name">Discrete Mathematics</span><span class="course-grade grade-a">A</span></div>
-                    <div class="course-item"><span class="course-name">C++ for Programmers</span><span class="course-grade grade-a">A</span></div>
-                    <div class="course-item"><span class="course-name">Problem Solving Lab</span><span class="course-grade grade-a">A</span></div>
+                    <div class="course-item"><span class="course-name">Data Structures &amp; Algorithms</span><span class="course-grade grade-ap">A+</span></div>
+                    <div class="course-item"><span class="course-name">Discrete Mathematics</span><span class="course-grade grade-ap">A+</span></div>
+                    <div class="course-item"><span class="course-name">C++ for Programmers</span><span class="course-grade grade-ap">A+</span></div>
+                    <div class="course-item"><span class="course-name">Problem Solving Lab</span><span class="course-grade grade-ap">A+</span></div>
                 </div>
-                <div class="courses-source" style="margin-top: 20px;">ECUST &nbsp;·&nbsp; 2022–2026</div>
+                <div class="courses-source" style="margin-top:20px;"><span class="en">ECUST &nbsp;&middot;&nbsp; 2022&ndash;2026</span><span class="zh">华东理工大学 &nbsp;&middot;&nbsp; 2022&ndash;2026</span></div>
                 <div class="courses-grid">
                     <div class="course-item"><span class="course-name">Big Data Algorithms</span><span class="course-grade grade-num-high">100</span></div>
-                    <div class="course-item"><span class="course-name">AI Language & Ethics</span><span class="course-grade grade-num-high">100</span></div>
-                    <div class="course-item"><span class="course-name">Data Structures & Algorithms</span><span class="course-grade grade-num-high">94</span></div>
-                    <div class="course-item"><span class="course-name">Computer Network & Cloud Computing</span><span class="course-grade grade-num-mid">92</span></div>
-                    <div class="course-item"><span class="course-name">AI Tech & Applications</span><span class="course-grade grade-num-mid">91</span></div>
+                    <div class="course-item"><span class="course-name">AI Language &amp; Ethics</span><span class="course-grade grade-num-high">100</span></div>
+                    <div class="course-item"><span class="course-name">Data Structures &amp; Algorithms</span><span class="course-grade grade-num-high">94</span></div>
+                    <div class="course-item"><span class="course-name">Computer Network &amp; Cloud Computing</span><span class="course-grade grade-num-mid">92</span></div>
+                    <div class="course-item"><span class="course-name">AI Tech &amp; Applications</span><span class="course-grade grade-num-mid">91</span></div>
                     <div class="course-item"><span class="course-name">Principles of Operating Systems</span><span class="course-grade grade-num-mid">85</span></div>
                     <div class="course-item"><span class="course-name">Information Retrieval</span><span class="course-grade grade-num-mid">85</span></div>
                     <div class="course-item"><span class="course-name">Computer Applications to ChemE</span><span class="course-grade grade-num-mid">82</span></div>
                 </div>
-                <div class="courses-source" style="margin-top: 20px;">UT Austin &nbsp;·&nbsp; Summer 2024</div>
+                <div class="courses-source" style="margin-top:20px;"><span class="en">UT Austin &nbsp;&middot;&nbsp; Summer 2024</span><span class="zh">德克萨斯大学奥斯汀分校 &nbsp;&middot;&nbsp; 2024年暑期</span></div>
                 <div class="courses-grid">
                     <div class="course-item"><span class="course-name">Data Analysis (R)</span><span class="course-grade grade-a">A</span></div>
                     <div class="course-item"><span class="course-name">Python Programming</span><span class="course-grade grade-a">A</span></div>
                 </div>
             </div>
-
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-amber"><i class="fas fa-atom"></i> Science & Engineering Fundamentals</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-amber"><i class="fas fa-atom"></i> <span class="en">Science &amp; Engineering Fundamentals</span><span class="zh">理工基础课程</span></div>
                 <div class="courses-grid">
                     <div class="course-item"><span class="course-name">Advanced Mathematics II</span><span class="course-grade grade-num-high">98</span></div>
-                    <div class="course-item"><span class="course-name">Probability & Mathematical Statistics</span><span class="course-grade grade-num-mid">90</span></div>
+                    <div class="course-item"><span class="course-name">Probability &amp; Mathematical Statistics</span><span class="course-grade grade-num-mid">90</span></div>
                     <div class="course-item"><span class="course-name">Chemical Engineering Principles</span><span class="course-grade grade-num-mid">91</span></div>
                     <div class="course-item"><span class="course-name">Analytical Chemistry A1</span><span class="course-grade grade-num-mid">90</span></div>
                     <div class="course-item"><span class="course-name">Separation Engineering</span><span class="course-grade grade-num-mid">92</span></div>
@@ -920,186 +705,143 @@
             </div>
         </div>
 
-        <!-- ========== RESEARCH TAB ========== -->
+        <!-- RESEARCH -->
         <div id="research" class="tab-content">
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-purple"><i class="fas fa-terminal"></i> Research Experience</div>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-purple"><i class="fas fa-terminal"></i> <span class="en">Research Experience</span><span class="zh">科研经历</span></div>
                 <div class="timeline-item">
-                    <div class="pub-badge"><i class="fas fa-flask"></i> Ongoing Research · UC Riverside</div>
-                    <div class="header-flex">
-                        <span>Physics-Informed Multi-Modal GNN for Molecular Solubility</span>
-                        <span class="date-tag">Jan 2025 – Present</span>
-                    </div>
-                    <div class="sub-header">Advisor: Prof. Jianzhong Wu · UC Riverside</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.8; margin: 8px 0 12px 0;">
-                        Architected a multi-modal fusion GNN (~5.7M parameters, 5-fold ensemble) combining AttentiveFP solute encoder, GIN solvent encoder, and descriptor MLP. Embedded the Van't Hoff thermodynamic constraint as a physics-informed auxiliary loss. Achieved R²=0.968, RMSE=0.244 on held-out test set. Implemented GradCAM-based solvent-aware atomic attribution.
-                    </p>
-                    <div>
-                        <span class="tag">PyTorch Geometric</span><span class="tag">AttentiveFP</span><span class="tag">GIN</span>
-                        <span class="tag">GradCAM</span><span class="tag">Physics-Informed ML</span><span class="tag">RDKit</span>
-                    </div>
+                    <div class="pub-badge"><i class="fas fa-flask"></i> <span class="en">Ongoing Research &middot; UC Riverside</span><span class="zh">进行中 &middot; 加州大学河滨分校</span></div>
+                    <div class="header-flex"><span>Physics-Informed Multi-Modal GNN for Molecular Solubility</span><span class="date-tag">Jan 2025 &ndash; Present</span></div>
+                    <div class="sub-header"><span class="en">Advisor: Prof. Jianzhong Wu &middot; UC Riverside</span><span class="zh">导师：吴建中教授 &middot; 加州大学河滨分校</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.8;margin:8px 0 12px 0;"><span class="en">Architected a multi-modal fusion GNN (~5.7M parameters, 5-fold ensemble) combining AttentiveFP solute encoder, GIN solvent encoder, and descriptor MLP. Embedded the Van&rsquo;t Hoff thermodynamic constraint as a physics-informed auxiliary loss. Achieved R&sup2;=0.968, RMSE=0.244 on held-out test set. Implemented GradCAM-based solvent-aware atomic attribution.</span><span class="zh">构建多模态融合GNN（约570万参数，5折集成），融合AttentiveFP溶质编码器、GIN溶剂编码器与描述符MLP。将Van't Hoff热力学约束嵌入为物理信息辅助损失函数，测试集R²=0.968，RMSE=0.244，并实现GradCAM溶剂感知原子归因。</span></p>
+                    <div><span class="tag">PyTorch Geometric</span><span class="tag">AttentiveFP</span><span class="tag">GIN</span><span class="tag">GradCAM</span><span class="tag">Physics-Informed ML</span><span class="tag">RDKit</span></div>
                 </div>
                 <div class="timeline-item">
-                    <div class="pub-badge"><i class="fas fa-file-alt"></i> Under Review · Fuel Journal (JFUE-D-25-13575)</div>
-                    <div class="header-flex">
-                        <span>Multi-objective Optimization of Ethylene Cracking Furnaces</span>
-                        <span class="date-tag">Jan 2025 – Present</span>
-                    </div>
-                    <div class="sub-header">2nd Author · Advisors: Prof. Du Wenli & Prof. Zhao Liang · ECUST</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.8; margin: 8px 0 12px 0;">
-                        Developed a multi-objective MINLP optimization framework balancing economic efficiency and carbon emissions in petrochemical systems. Achieved 38.6% CO₂ reduction via dynamic coking mitigation. ML-based surrogate models handle coke thickness prediction and heat transfer optimization across multi-furnace systems.
-                    </p>
-                    <div>
-                        <span class="tag">MINLP</span><span class="tag">DICOPT</span><span class="tag">Surrogate Modeling</span>
-                        <span class="tag">Genetic Algorithm</span><span class="tag">Aspen Plus</span>
-                    </div>
+                    <div class="pub-badge"><i class="fas fa-file-alt"></i> <span class="en">Under Review &middot; Fuel Journal (JFUE-D-25-13575)</span><span class="zh">审稿中 &middot; Fuel期刊</span></div>
+                    <div class="header-flex"><span>Multi-objective Optimization of Ethylene Cracking Furnaces</span><span class="date-tag">Jan 2025 &ndash; Present</span></div>
+                    <div class="sub-header"><span class="en">2nd Author &middot; Advisors: Prof. Du Wenli &amp; Prof. Zhao Liang &middot; ECUST</span><span class="zh">第二作者 &middot; 导师：杜文莉教授 &amp; 赵亮教授 &middot; 华东理工大学</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.8;margin:8px 0 12px 0;"><span class="en">Developed a multi-objective MINLP optimization framework balancing economic efficiency and carbon emissions in petrochemical systems. Achieved 38.6% CO&#8322; reduction via dynamic coking mitigation. ML-based surrogate models handle coke thickness prediction and heat transfer optimization across multi-furnace systems.</span><span class="zh">构建石化系统多目标MINLP优化框架，实现经济效益与碳排放的协同优化，通过动态结焦调度实现CO₂减排38.6%。基于ML代理模型处理多炉系统的焦层厚度预测与传热优化。</span></p>
+                    <div><span class="tag">MINLP</span><span class="tag">DICOPT</span><span class="tag">Surrogate Modeling</span><span class="tag">Genetic Algorithm</span><span class="tag">Aspen Plus</span></div>
                 </div>
-                <div class="timeline-item" style="margin-bottom: 0;">
-                    <div class="pub-badge" style="background:rgba(42,255,160,0.07);color:var(--accent-green);border:1px solid rgba(42,255,160,0.2);"><i class="fas fa-check-circle"></i> Completed · ECUST</div>
-                    <div class="header-flex">
-                        <span>Multiphase Catalytic Reactions — ML Screening</span>
-                        <span class="date-tag">Mar 2024 – Aug 2024</span>
-                    </div>
-                    <div class="sub-header">Undergraduate Researcher · ECUST</div>
-                    <p style="font-size:0.78rem; color:var(--text-secondary); line-height:1.8; margin: 8px 0 12px 0;">
-                        Led Python implementation of volcano plot generation for high-throughput catalyst screening and descriptor identification in multiphase catalytic systems. Applied ML methods to identify key descriptors and accelerate reaction pathway discovery.
-                    </p>
-                    <div>
-                        <span class="tag">Python</span><span class="tag">Volcano Plots</span><span class="tag">Catalyst Screening</span>
-                        <span class="tag">Descriptor Analysis</span><span class="tag">Scikit-learn</span>
-                    </div>
+                <div class="timeline-item" style="margin-bottom:0;">
+                    <div class="pub-badge" style="background:rgba(42,255,160,0.07);color:var(--accent-green);border:1px solid rgba(42,255,160,0.2);"><i class="fas fa-check-circle"></i> <span class="en">Completed &middot; ECUST</span><span class="zh">已完成 &middot; 华东理工大学</span></div>
+                    <div class="header-flex"><span>Multiphase Catalytic Reactions &mdash; ML Screening</span><span class="date-tag">Mar 2024 &ndash; Aug 2024</span></div>
+                    <div class="sub-header"><span class="en">Undergraduate Researcher &middot; ECUST</span><span class="zh">本科生科研助理 &middot; 华东理工大学</span></div>
+                    <p style="font-size:0.78rem;color:var(--text-secondary);line-height:1.8;margin:8px 0 12px 0;"><span class="en">Led Python implementation of volcano plot generation for high-throughput catalyst screening and descriptor identification in multiphase catalytic systems. Applied ML methods to identify key descriptors and accelerate reaction pathway discovery.</span><span class="zh">主导多相催化体系中火山图生成的Python实现，用于高通量催化剂筛选与描述符识别，应用ML方法加速反应路径发现。</span></p>
+                    <div><span class="tag">Python</span><span class="tag">Volcano Plots</span><span class="tag">Catalyst Screening</span><span class="tag">Descriptor Analysis</span><span class="tag">Scikit-learn</span></div>
                 </div>
             </div>
-
-            <div class="card" style="border-radius: 16px;">
-                <div class="section-title s-green"><i class="fas fa-lightbulb"></i> Research Interests</div>
-                <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.9; margin: 0;">
-                    My work sits at the intersection of <strong style="color:var(--text-primary)">machine learning</strong> and <strong style="color:var(--text-primary)">natural science</strong>. I focus on developing AI methods grounded in physical and chemical principles — particularly <strong style="color:var(--accent-cyan)">physics-informed ML</strong>, <strong style="color:var(--accent-cyan)">graph neural networks for molecular systems</strong>, and <strong style="color:var(--accent-cyan)">AI-driven scientific discovery</strong>. My dual training in chemical engineering and CS gives me both thermodynamics/reaction domain knowledge and hands-on deep learning experience. Long-term goal: interpretable, physically consistent AI that accelerates chemistry, drug design, and energy systems.
-                </p>
+            <div class="card" style="border-radius:16px;">
+                <div class="section-title s-green"><i class="fas fa-lightbulb"></i> <span class="en">Research Interests</span><span class="zh">研究兴趣</span></div>
+                <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.9;margin:0;"><span class="en">My work sits at the intersection of <strong style="color:var(--text-primary)">machine learning</strong> and <strong style="color:var(--text-primary)">natural science</strong>. I focus on developing AI methods grounded in physical and chemical principles &mdash; particularly <strong style="color:var(--accent-cyan)">physics-informed ML</strong>, <strong style="color:var(--accent-cyan)">graph neural networks for molecular systems</strong>, and <strong style="color:var(--accent-cyan)">AI-driven scientific discovery</strong>. My dual training in chemical engineering and CS gives me both thermodynamics/reaction domain knowledge and hands-on deep learning experience. Long-term goal: interpretable, physically consistent AI that accelerates chemistry, drug design, and energy systems.</span><span class="zh">我的研究聚焦于<strong style="color:var(--text-primary)">机器学习</strong>与<strong style="color:var(--text-primary)">自然科学</strong>的交汇处，致力于开发以物理和化学原理为基础的AI方法——尤其是<strong style="color:var(--accent-cyan)">物理信息机器学习</strong>、<strong style="color:var(--accent-cyan)">分子系统图神经网络</strong>和<strong style="color:var(--accent-cyan)">AI驱动的科学发现</strong>。化工与计算机的双重训练让我兼具热力学/反应域知识和深度学习实战经验。长期目标：构建可解释、物理自洽的AI，加速化学、药物设计和能源系统的研究进程。</span></p>
             </div>
         </div>
 
-        <!-- ========== PROJECTS TAB ========== -->
+        <!-- PROJECTS -->
         <div id="projects" class="tab-content">
 
-            <!-- EcoLung card -->
+            <!-- FLUXMIND card -->
             <div class="project-card">
-                <div class="project-card-top" style="background: linear-gradient(90deg, #028090, #00c9b1, #2affa0);"></div>
+                <div class="project-card-top" style="background:linear-gradient(90deg,#00E5CC,#9B5DE5,#00E5CC);"></div>
                 <div class="project-card-body">
-
-                    <!-- Live badge -->
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
-                        <span class="project-live-badge">
-                            <span class="project-live-dot"></span>
-                            Live · Deployed on Vercel
-                        </span>
-                        <span style="font-size:0.68rem; color:var(--text-secondary); font-style:italic;">UCR BearHacks 2025</span>
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                        <span class="project-live-badge"><span class="project-live-dot"></span><span class="en">Live &middot; Deployed</span><span class="zh">已上线 &middot; 已部署</span></span>
+                        <span style="font-size:0.68rem;color:var(--text-secondary);font-style:italic;"><span class="en">CitrusHack 2025 &middot; UC Riverside</span><span class="zh">CitrusHack 2025 &middot; 加州大学河滨分校</span></span>
                     </div>
-
-                    <!-- Hackathon strip -->
-                    <div class="hackathon-strip">
-                        <div class="hackathon-icon">🏆</div>
+                    <div class="hackathon-strip" style="background:linear-gradient(135deg,rgba(0,229,204,0.06),rgba(155,93,229,0.06));border-color:rgba(0,229,204,0.2);">
+                        <div class="hackathon-icon">&#129504;</div>
                         <div class="hackathon-text">
-                            <div class="hackathon-name">UCR BearHacks Hackathon · 2025</div>
-                            <div class="hackathon-detail">Built and shipped end-to-end in under 24 hours · Full-stack, live deployment, real external data</div>
+                            <div class="hackathon-name" style="color:var(--accent-cyan);">CitrusHack &middot; UCR &middot; 2025</div>
+                            <div class="hackathon-detail"><span class="en">End-to-end cognitive simulation system shipped under 24h &middot; Interactive presentation + live demo</span><span class="zh">24小时内完成的认知负载模拟系统 &middot; 交互演示 + 现场Demo</span></div>
                         </div>
                     </div>
-
-                    <div class="project-title">EcoLung</div>
-                    <div class="project-subtitle">Personal Exposure & Sustainable Action Simulator</div>
-
-                    <p class="project-desc">
-                        EcoLung turns invisible long-term air pollution exposure into a visible, personal story. Users select a real location, define their current daily routine, and compare it to a better one — then watch the difference play out on an interactive 3D lung that changes color, particle density, and airflow over a continuous year timeline. The app pulls live environmental data from OpenAQ and uses a behavior-parameterized exposure engine to project long-term respiratory burden. <strong style="color:var(--text-primary)">Not a dashboard. Not a diagnostic. A simulator that makes the invisible visible.</strong>
-                    </p>
-
-                    <!-- Stats -->
+                    <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
+                        <div class="project-title" style="font-family:'JetBrains Mono',monospace;letter-spacing:2px;color:var(--accent-cyan);text-shadow:0 0 20px rgba(0,210,255,0.4);">FLUXMIND</div>
+                        <div style="font-size:0.72rem;color:var(--text-secondary);font-family:'JetBrains Mono',monospace;letter-spacing:1px;">&mdash; OVERLOAD RADAR</div>
+                    </div>
+                    <div class="project-subtitle"><span class="en">Cognitive Load Simulation System &amp; Decision Engine</span><span class="zh">认知负载模拟系统与决策引擎</span></div>
+                    <p class="project-desc"><span class="en">FluxMind is a cognitive load simulator that models how stress accumulates across competing life decisions. Given your schedule, exams, and life events, it runs three parallel &ldquo;what-if&rdquo; futures &mdash; simulating stress trajectories over time using a probabilistic uncertainty engine and a constraint-based decision solver. The goal: not to tell you what to do, but to make the invisible cognitive cost of choices <strong style="color:var(--text-primary)">visible before you commit to them.</strong></span><span class="zh">FluxMind 是一个认知负载模拟器，模拟压力在相互竞争的生活决策中如何积累。输入你的日程、考试和生活事件，它会运行三条并行的"假设"未来——通过概率性不确定性引擎和约束决策求解器模拟压力轨迹。目标不是告诉你该怎么做，而是让选择背后隐形的认知代价<strong style="color:var(--text-primary)">在你做决定之前变得可见。</strong></span></p>
                     <div class="project-stats">
-                        <div class="pstat">
-                            <div class="pstat-val" style="color:var(--accent-green);">4.2M</div>
-                            <div class="pstat-lab">Deaths/yr addressed</div>
-                        </div>
-                        <div class="pstat">
-                            <div class="pstat-val" style="color:var(--accent-cyan);">Live</div>
-                            <div class="pstat-lab">OpenAQ data</div>
-                        </div>
-                        <div class="pstat">
-                            <div class="pstat-val" style="color:var(--accent-purple);">3D</div>
-                            <div class="pstat-lab">Lung visualization</div>
-                        </div>
-                        <div class="pstat">
-                            <div class="pstat-val" style="color:var(--accent-amber);">&lt;24h</div>
-                            <div class="pstat-lab">Built & shipped</div>
-                        </div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-cyan);">3</div><div class="pstat-lab"><span class="en">Parallel Futures</span><span class="zh">并行未来</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-green);">&infin;</div><div class="pstat-lab"><span class="en">What-if Scenarios</span><span class="zh">假设场景</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-purple);">70%</div><div class="pstat-lab"><span class="en">Overload Boundary</span><span class="zh">过载边界</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-amber);">&lt;24h</div><div class="pstat-lab"><span class="en">Built &amp; Shipped</span><span class="zh">构建完成</span></div></div>
                     </div>
-
-                    <!-- Highlights grid -->
                     <div class="project-highlights">
-                        <div class="highlight-item">
-                            <div class="highlight-icon">🌍</div>
-                            <div class="highlight-text">
-                                <strong>Real Environmental Data</strong>
-                                Live PM2.5, PM10, and O₃ measurements pulled from OpenAQ API for any selected region.
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">🫁</div>
-                            <div class="highlight-text">
-                                <strong>3D Lung Scene</strong>
-                                Three.js visualization — color, particle density, and airflow shift as years accumulate.
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">⚗️</div>
-                            <div class="highlight-text">
-                                <strong>Exposure Engine</strong>
-                                Behavior × pollutant model using CDC/NIOSH/EPA-calibrated filtration parameters, not assumptions.
-                            </div>
-                        </div>
-                        <div class="highlight-item">
-                            <div class="highlight-icon">📊</div>
-                            <div class="highlight-text">
-                                <strong>Before vs. After</strong>
-                                Compare current routine vs. improved routine — mask, HEPA, outdoor hours — across a year slider.
-                            </div>
-                        </div>
+                        <div class="highlight-item"><div class="highlight-icon">&#128202;</div><div class="highlight-text"><strong><span class="en"><span class="en">Stress Curve Engine</span><span class="zh">压力曲线引擎</span></span><span class="zh">压力曲线引擎</span></strong><span class="en">Renders 3 plan trajectories with animated curves &mdash; showing when each path breaches the 70% overload threshold.</span><span class="zh">渲染3条计划轨迹动画曲线，展示每条路径何时突破70%过载阈值。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#127922;</div><div class="highlight-text"><strong><span class="en"><span class="en">Uncertainty Engine</span><span class="zh">不确定性引擎</span></span><span class="zh">不确定性引擎</span></strong><span class="en">Probabilistic min/max distributions model variance in task difficulty, deadline proximity, and life disruptions.</span><span class="zh">概率性最大/最小分布建模任务难度、截止日期临近程度和生活干扰的方差。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#128506;</div><div class="highlight-text"><strong><span class="en"><span class="en">Architecture Mind-Map</span><span class="zh">架构思维导图</span></span><span class="zh">架构思维导图</span></strong><span class="en">Interactive hierarchical diagram showing Input &rarr; Parsing &rarr; Simulation &rarr; Decision &rarr; Output pipeline.</span><span class="zh">交互式层级图，展示输入→解析→模拟→决策→输出的完整流程。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#10024;</div><div class="highlight-text"><strong><span class="en"><span class="en">Star-Field Background</span><span class="zh">星空背景</span></span><span class="zh">星空背景</span></strong><span class="en">Canvas-based constellation system &mdash; stars drift autonomously, connect to each other and to your cursor in real time.</span><span class="zh">基于Canvas的星座系统——星星自主漂移，实时与彼此及鼠标连线。</span></div></div>
                     </div>
-
-                    <!-- Tech stack -->
-                    <div style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px;">Tech Stack</div>
+                    <div style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;"><span class="en">Tech Stack</span><span class="zh">技术栈</span></div>
                     <div class="project-stack">
-                        <span class="stack-tag frontend">React</span>
-                        <span class="stack-tag frontend">Vite</span>
-                        <span class="stack-tag frontend">Three.js</span>
-                        <span class="stack-tag backend">FastAPI</span>
-                        <span class="stack-tag backend">Python</span>
-                        <span class="stack-tag data">OpenAQ API</span>
-                        <span class="stack-tag data">Exposure Engine</span>
+                        <span class="stack-tag frontend">HTML / CSS / JS</span>
+                        <span class="stack-tag frontend">Canvas API</span>
+                        <span class="stack-tag frontend">SVG Animation</span>
+                        <span class="stack-tag data">Stress Simulation</span>
+                        <span class="stack-tag data">Uncertainty Modeling</span>
+                        <span class="stack-tag backend">Decision Solver</span>
                         <span class="stack-tag infra">Vercel</span>
                     </div>
-
-                    <!-- CTA buttons -->
                     <div class="project-cta">
-                        <a href="https://ucr-bearhack-ecolung.vercel.app/" target="_blank" rel="noopener" class="cta-btn cta-primary">
-                            <i class="fas fa-external-link-alt"></i> Launch App
-                        </a>
-                        <a href="https://github.com/cyy-07" target="_blank" rel="noopener" class="cta-btn cta-secondary">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
+                        <a href="#" target="_blank" rel="noopener" class="cta-btn cta-primary" style="background:var(--accent-cyan);color:#000;"><i class="fas fa-external-link-alt"></i> <span class="en">Launch Demo</span><span class="zh">在线演示</span></a>
+                        <a href="https://github.com/cyy-07" target="_blank" rel="noopener" class="cta-btn cta-secondary"><i class="fab fa-github"></i> GitHub</a>
                     </div>
                 </div>
             </div>
 
-            <!-- More projects placeholder -->
-            <div class="more-projects-card">
-                <div class="more-icon">🚧</div>
-                <div class="more-text">
-                    <h3>More projects coming soon</h3>
-                    <p>Additional side projects and open-source work will be added here. In the meantime, check GitHub for recent activity.</p>
+            <!-- ECOLUNG card -->
+            <div class="project-card">
+                <div class="project-card-top" style="background:linear-gradient(90deg,#028090,#00c9b1,#2affa0);"></div>
+                <div class="project-card-body">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;">
+                        <span class="project-live-badge"><span class="project-live-dot"></span><span class="en">Live &middot; Deployed on Vercel</span><span class="zh">已上线 &middot; 部署于Vercel</span></span>
+                        <span style="font-size:0.68rem;color:var(--text-secondary);font-style:italic;"><span class="en">UCR BearHacks 2025</span><span class="zh">UCR BearHacks 2025</span></span>
+                    </div>
+                    <div class="hackathon-strip">
+                        <div class="hackathon-icon">&#127942;</div>
+                        <div class="hackathon-text">
+                            <div class="hackathon-name">UCR BearHacks Hackathon &middot; 2025</div>
+                            <div class="hackathon-detail"><span class="en">Built and shipped end-to-end in under 24 hours &middot; Full-stack, live deployment, real external data</span><span class="zh">24小时内完成全栈开发与部署 &middot; 真实外部数据</span></div>
+                        </div>
+                    </div>
+                    <div class="project-title">EcoLung</div>
+                    <div class="project-subtitle"><span class="en">Personal Exposure &amp; Sustainable Action Simulator</span><span class="zh">个人暴露量与可持续行动模拟器</span></div>
+                    <p class="project-desc"><span class="en">EcoLung turns invisible long-term air pollution exposure into a visible, personal story. Users select a real location, define their current daily routine, and compare it to a better one &mdash; then watch the difference play out on an interactive 3D lung that changes color, particle density, and airflow over a continuous year timeline. The app pulls live environmental data from OpenAQ and uses a behavior-parameterized exposure engine to project long-term respiratory burden. <strong style="color:var(--text-primary)">Not a dashboard. Not a diagnostic. A simulator that makes the invisible visible.</strong></span><span class="zh">EcoLung 将无形的长期空气污染暴露转化为可感知的个人故事。用户选择真实地点、设定当前日常习惯，与改善后的习惯对比——在交互式3D肺部模型上实时看到差异，颜色、粒子密度和气流随着年份时间轴动态演变。应用从OpenAQ获取实时环境数据，通过行为参数化暴露引擎预测长期呼吸负担。<strong style="color:var(--text-primary)">不是仪表板，不是诊断工具，而是让隐形可见的模拟器。</strong></span></p>
+                    <div class="project-stats">
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-green);">4.2M</div><div class="pstat-lab"><span class="en">Deaths/yr addressed</span><span class="zh">每年相关死亡</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-cyan);">Live</div><div class="pstat-lab"><span class="en">OpenAQ data</span><span class="zh">OpenAQ数据</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-purple);">3D</div><div class="pstat-lab"><span class="en">Lung visualization</span><span class="zh">肺部可视化</span></div></div>
+                        <div class="pstat"><div class="pstat-val" style="color:var(--accent-amber);">&lt;24h</div><div class="pstat-lab"><span class="en">Built &amp; shipped</span><span class="zh">构建完成</span></div></div>
+                    </div>
+                    <div class="project-highlights">
+                        <div class="highlight-item"><div class="highlight-icon">&#127758;</div><div class="highlight-text"><strong><span class="en"><span class="en">Real Environmental Data</span><span class="zh">真实环境数据</span></span><span class="zh">真实环境数据</span></strong><span class="en">Live PM2.5, PM10, and O&#8323; measurements pulled from OpenAQ API for any selected region.</span><span class="zh">从OpenAQ API实时获取任意地区的PM2.5、PM10和O₃浓度数据。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#129753;</div><div class="highlight-text"><strong><span class="en"><span class="en">3D Lung Scene</span><span class="zh">3D肺部场景</span></span><span class="zh">3D肺部场景</span></strong><span class="en">Three.js visualization &mdash; color, particle density, and airflow shift as years accumulate.</span><span class="zh">Three.js可视化——随着年份累积，颜色、粒子密度和气流动态变化。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#9879;</div><div class="highlight-text"><strong><span class="en"><span class="en">Exposure Engine</span><span class="zh">暴露量引擎</span></span><span class="zh">暴露量引擎</span></strong><span class="en">Behavior &times; pollutant model using CDC/NIOSH/EPA-calibrated filtration parameters, not assumptions.</span><span class="zh">行为×污染物模型，采用CDC/NIOSH/EPA校准的过滤参数，非假设推断。</span></div></div>
+                        <div class="highlight-item"><div class="highlight-icon">&#128202;</div><div class="highlight-text"><strong><span class="en"><span class="en">Before vs. After</span><span class="zh">前后对比</span></span><span class="zh">前后对比</span></strong><span class="en">Compare current routine vs. improved routine &mdash; mask, HEPA, outdoor hours &mdash; across a year slider.</span><span class="zh">通过年份滑块对比当前与改善后的日常习惯——口罩、空气净化器、户外时间。</span></div></div>
+                    </div>
+                    <div style="font-size:0.72rem;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;"><span class="en">Tech Stack</span><span class="zh">技术栈</span></div>
+                    <div class="project-stack">
+                        <span class="stack-tag frontend">React</span><span class="stack-tag frontend">Vite</span><span class="stack-tag frontend">Three.js</span>
+                        <span class="stack-tag backend">FastAPI</span><span class="stack-tag backend">Python</span>
+                        <span class="stack-tag data">OpenAQ API</span><span class="stack-tag data"><span class="en">Exposure Engine</span><span class="zh">暴露量引擎</span></span>
+                        <span class="stack-tag infra">Vercel</span>
+                    </div>
+                    <div class="project-cta">
+                        <a href="https://ucr-bearhack-ecolung.vercel.app/" target="_blank" rel="noopener" class="cta-btn cta-primary"><i class="fas fa-external-link-alt"></i> <span class="en">Launch App</span><span class="zh">打开应用</span></a>
+                        <a href="https://github.com/cyy-07" target="_blank" rel="noopener" class="cta-btn cta-secondary"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
                 </div>
             </div>
 
+            <div class="more-projects-card">
+                <div class="more-icon">&#128679;</div>
+                <div class="more-text">
+                    <h3><span class="en">More projects coming soon</span><span class="zh">更多项目即将上线</span></h3>
+                    <p><span class="en">Additional side projects and open-source work will be added here. In the meantime, check GitHub for recent activity.</span><span class="zh">更多项目与开源工作持续更新中，欢迎访问 GitHub 查看近期动态。</span></p>
+                </div>
+            </div>
         </div>
-        <!-- END PROJECTS TAB -->
 
     </main>
 </div>
@@ -1107,37 +849,100 @@
 <!-- Breathing Overlay -->
 <div class="breathing-overlay" id="breathingOverlay">
     <div class="breathing-circle" id="breathingCircle"></div>
-    <div class="breathing-text" id="breathingText">Follow the circle</div>
+    <div class="breathing-text" id="breathingText"><span class="en">Follow the circle</span><span class="zh">跟随圆圈</span></div>
 </div>
 
 <!-- Gentle Exit Overlay -->
 <div class="gentle-exit-overlay" id="gentleExitOverlay">
     <div class="exit-message">
-        <h2>You've done enough</h2>
-        <p>Take a rest. Tomorrow will be better.</p>
-        <button class="return-btn" onclick="deactivateGentleExit()">Maybe later</button>
+        <h2><span class="en">You&rsquo;ve done enough</span><span class="zh">你已经做得足够多了</span></h2>
+        <p><span class="en">Take a rest. Tomorrow will be better.</span><span class="zh">好好休息，明天会更好。</span></p>
+        <button class="return-btn" onclick="deactivateGentleExit()"><span class="en">Maybe later</span><span class="zh">稍后再说</span></button>
     </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<div id="copyFlash" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2affa0;color:#000;padding:10px 22px;border-radius:8px;font-size:0.78rem;font-weight:700;z-index:99999;opacity:0;transition:opacity 0.3s;pointer-events:none;">&#10003; Email copied!</div>
+
 <script>
+/* ===== STAR CANVAS (ported from FluxMind) ===== */
+const starCanvas = document.getElementById('star-canvas');
+const sCtx = starCanvas.getContext('2d');
+let CW, CH, starPts = [];
+let mX = -9999, mY = -9999;
+
+function resizeStar() { CW = starCanvas.width = window.innerWidth; CH = starCanvas.height = window.innerHeight; }
+resizeStar();
+window.addEventListener('resize', resizeStar);
+
+for (let i = 0; i < 40; i++) starPts.push({
+    x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.38, vy: (Math.random() - 0.5) * 0.38,
+    r: Math.random() * 1.8 + 0.6
+});
+
+(function drawStars() {
+    sCtx.clearRect(0, 0, CW, CH);
+    starPts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > CW) p.vx *= -1;
+        if (p.y < 0 || p.y > CH) p.vy *= -1;
+        const g = sCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+        g.addColorStop(0, 'rgba(0,210,255,0.28)');
+        g.addColorStop(1, 'rgba(0,210,255,0)');
+        sCtx.beginPath(); sCtx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+        sCtx.fillStyle = g; sCtx.fill();
+        sCtx.beginPath(); sCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        sCtx.fillStyle = 'rgba(0,210,255,0.55)'; sCtx.fill();
+    });
+    for (let i = 0; i < starPts.length; i++) {
+        for (let j = i + 1; j < starPts.length; j++) {
+            const dx = starPts[i].x - starPts[j].x, dy = starPts[i].y - starPts[j].y;
+            const d = Math.sqrt(dx*dx + dy*dy);
+            if (d < 130) {
+                sCtx.beginPath(); sCtx.moveTo(starPts[i].x, starPts[i].y); sCtx.lineTo(starPts[j].x, starPts[j].y);
+                sCtx.strokeStyle = 'rgba(0,210,255,' + (1 - d/130) * 0.14 + ')';
+                sCtx.lineWidth = 1.5; sCtx.stroke();
+            }
+        }
+        const dx = starPts[i].x - mX, dy = starPts[i].y - mY;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 200) {
+            sCtx.beginPath(); sCtx.moveTo(starPts[i].x, starPts[i].y); sCtx.lineTo(mX, mY);
+            sCtx.strokeStyle = 'rgba(0,210,255,' + (1 - d/200) * 0.32 + ')';
+            sCtx.lineWidth = 2.0; sCtx.stroke();
+        }
+    }
+    requestAnimationFrame(drawStars);
+})();
+
+/* ===== CUSTOM CURSOR ===== */
+const cdot = document.getElementById('cdot'), cring = document.getElementById('cring');
+let rX = 0, rY = 0;
+document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; cdot.style.left = mX + 'px'; cdot.style.top = mY + 'px'; });
+(function ringLoop() { rX += (mX - rX - 17) * 0.13; rY += (mY - rY - 17) * 0.13; cring.style.left = rX + 'px'; cring.style.top = rY + 'px'; requestAnimationFrame(ringLoop); })();
+document.querySelectorAll('a, button, .tab-btn, [data-tooltip]').forEach(el => {
+    el.addEventListener('mouseenter', () => { cdot.style.width = '14px'; cdot.style.height = '14px'; cdot.style.background = 'var(--accent-green)'; cdot.style.boxShadow = '0 0 12px rgba(42,255,160,0.9), 0 0 28px rgba(42,255,160,0.45)'; });
+    el.addEventListener('mouseleave', () => { cdot.style.width = '8px'; cdot.style.height = '8px'; cdot.style.background = 'var(--accent-cyan)'; cdot.style.boxShadow = '0 0 10px rgba(0,210,255,0.9), 0 0 22px rgba(0,210,255,0.45)'; });
+});
+
+/* ===== TABS ===== */
 function switchTab(tabId, event) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
-    const matchingBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-    if (matchingBtn) matchingBtn.classList.add('active');
-    if (tabId === 'about') setTimeout(triggerSkillBars, 50);
+    const btn = document.querySelector('.tab-btn[data-tab="' + tabId + '"]');
+    if (btn) btn.classList.add('active');
+    if (tabId === 'about') setTimeout(renderStars, 50);
     document.querySelector('.content').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ===== SKILL STARS ===== */
 function renderStars() {
     document.querySelectorAll('.sk-stars').forEach(el => {
-        const total = 5;
         const val = parseFloat(el.getAttribute('data-stars'));
         const color = el.getAttribute('data-color') || '#00d2ff';
         el.innerHTML = '';
-        for (let i = 1; i <= total; i++) {
+        for (let i = 1; i <= 5; i++) {
             const dot = document.createElement('span');
             dot.className = 'sk-star';
             dot.style.background = color;
@@ -1148,141 +953,104 @@ function renderStars() {
         }
     });
 }
-function triggerSkillBars() { renderStars(); }
 
-function animateCounter(el, target, decimals, suffix) {
-    const duration = 1200, start = performance.now(), startVal = 0;
-    function step(now) {
-        const elapsed = now - start, progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = (startVal + (target - startVal) * eased).toFixed(decimals) + (suffix || '');
-        if (progress < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+function animCounter(el, target, dec, suffix) {
+    const dur = 1200, start = performance.now();
+    (function step(now) {
+        const p = Math.min((now - start) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = (target * e).toFixed(dec) + (suffix || '');
+        if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
 }
 
 window.addEventListener('DOMContentLoaded', () => {
     renderStars();
-    const stats = [
-        { el: document.querySelectorAll('.stat-num')[0], val: 3.61, dec: 2, suffix: '' },
-        { el: document.querySelectorAll('.stat-num')[2], val: 2026, dec: 0, suffix: '' },
-    ];
-    stats.forEach(s => { if (s.el) animateCounter(s.el, s.val, s.dec, s.suffix); });
+    const nums = document.querySelectorAll('.stat-num');
+    if (nums[0]) animCounter(nums[0], 3.61, 2, '');
+    if (nums[2]) animCounter(nums[2], 2026, 0, '');
 });
 
+/* ===== EMAIL COPY ===== */
 document.getElementById('emailLink').addEventListener('click', function(e) {
     e.preventDefault();
     navigator.clipboard.writeText('ychen1420@ucr.edu').then(() => {
-        const flash = document.getElementById('copyFlash');
-        flash.classList.add('show');
-        setTimeout(() => flash.classList.remove('show'), 2200);
+        const f = document.getElementById('copyFlash'); f.style.opacity = '1';
+        setTimeout(() => { f.style.opacity = '0'; }, 2200);
     }).catch(() => { window.location.href = 'mailto:ychen1420@ucr.edu'; });
 });
 
+/* ===== TENT MODE ===== */
 let tentActive = false;
-const buildBtn = document.getElementById("build-tent");
-const clearBtn = document.getElementById("clear-tents");
-buildBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    tentActive = !tentActive;
-    if (tentActive) {
-        buildBtn.classList.add("active");
-        buildBtn.innerHTML = '<i class="fas fa-times"></i> Exit';
-        clearBtn.style.display = "block";
-        document.body.style.cursor = 'crosshair';
-    } else {
-        buildBtn.classList.remove("active");
-        buildBtn.innerHTML = '<i class="fas fa-campground"></i> Build Tent';
-        clearBtn.style.display = "none";
-        document.body.style.cursor = 'auto';
-    }
+const buildBtn = document.getElementById('build-tent'), clearBtn = document.getElementById('clear-tents');
+buildBtn.addEventListener('click', e => {
+    e.stopPropagation(); tentActive = !tentActive;
+    buildBtn.classList.toggle('active', tentActive);
+    buildBtn.innerHTML = tentActive ? '<i class="fas fa-times"></i> Exit' : '<i class="fas fa-campground"></i> <span class="en">Build Tent</span><span class="zh">搭帐篷</span>';
+    clearBtn.style.display = tentActive ? 'block' : 'none';
 });
-document.addEventListener("click", (e) => {
+document.addEventListener('click', e => {
     if (!tentActive) return;
-    const clickedElement = e.target.closest('button, a, .tab-btn');
-    if (clickedElement) {
-        if (clickedElement.id !== 'build-tent' && clickedElement.id !== 'clear-tents' && !clickedElement.classList.contains('tab-btn')) {
-            e.preventDefault(); e.stopPropagation(); return;
-        }
-        return;
-    }
-    const tent = document.createElement("div");
-    tent.className = "tent-mark";
-    tent.innerHTML = '<i class="fas fa-campground" style="color: var(--accent-green); font-size: 28px;"></i>';
-    tent.style.left = `${e.pageX - 14}px`;
-    tent.style.top = `${e.pageY - 14}px`;
+    const el = e.target.closest('button, a, .tab-btn');
+    if (el && el.id !== 'build-tent' && el.id !== 'clear-tents' && !el.classList.contains('tab-btn')) { e.preventDefault(); e.stopPropagation(); return; }
+    if (el) return;
+    const tent = document.createElement('div');
+    tent.className = 'tent-mark';
+    tent.innerHTML = '<i class="fas fa-campground" style="color:var(--accent-green);font-size:28px;"></i>';
+    tent.style.left = (e.pageX - 14) + 'px'; tent.style.top = (e.pageY - 14) + 'px';
     document.body.appendChild(tent);
 }, true);
-clearBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    document.querySelectorAll('.tent-mark').forEach(m => m.remove());
-});
+clearBtn.addEventListener('click', e => { e.stopPropagation(); document.querySelectorAll('.tent-mark').forEach(m => m.remove()); });
 
-let breathingTimeout;
-document.getElementById('breathing-btn').addEventListener('click', function() {
-    const overlay = document.getElementById('breathingOverlay');
-    const circle = document.getElementById('breathingCircle');
-    const text = document.getElementById('breathingText');
-    overlay.classList.add('active');
-    circle.classList.add('animating');
-    const phases = [{ time: 0, text: 'Breathe in...' }, { time: 4000, text: 'Hold...' }, { time: 8000, text: 'Breathe out...' }];
-    phases.forEach(p => setTimeout(() => { text.textContent = p.text; }, p.time));
-    breathingTimeout = setTimeout(() => {
-        overlay.classList.remove('active');
-        circle.classList.remove('animating');
-        text.textContent = 'Follow the circle';
-    }, 12000);
+/* ===== BREATHING ===== */
+let breathTO;
+document.getElementById('breathing-btn').addEventListener('click', () => {
+    const ov = document.getElementById('breathingOverlay'), ci = document.getElementById('breathingCircle'), tx = document.getElementById('breathingText');
+    ov.classList.add('active'); ci.classList.add('animating');
+    [{t:0,s:'Breathe in...'},{t:4000,s:'Hold...'},{t:8000,s:'Breathe out...'}].forEach(p => setTimeout(() => tx.textContent = p.s, p.t));
+    breathTO = setTimeout(() => { ov.classList.remove('active'); ci.classList.remove('animating'); tx.textContent = 'Follow the circle'; }, 12000);
 });
 document.getElementById('breathingOverlay').addEventListener('click', function(e) {
-    if (e.target === this) {
-        clearTimeout(breathingTimeout);
-        this.classList.remove('active');
-        document.getElementById('breathingCircle').classList.remove('animating');
-    }
+    if (e.target !== this) return;
+    clearTimeout(breathTO); this.classList.remove('active'); document.getElementById('breathingCircle').classList.remove('animating');
 });
 
-document.getElementById('snow-btn').addEventListener('click', function() {
-    const count = 50; let created = 0;
-    const timer = setInterval(() => {
-        if (created >= count) { clearInterval(timer); return; }
-        for (let i = 0; i < 3; i++) createSnowflake();
-        created++;
-    }, 100);
+/* ===== SNOW ===== */
+document.getElementById('snow-btn').addEventListener('click', () => {
+    let n = 0; const t = setInterval(() => { if (n++ >= 50) { clearInterval(t); return; } for (let i = 0; i < 3; i++) mkFlake(); }, 100);
 });
-function createSnowflake() {
-    const s = document.createElement('div');
-    s.className = 'snowflake';
-    s.textContent = ['❄','❅','❆'][Math.floor(Math.random() * 3)];
-    s.style.left = Math.random() * 100 + 'vw';
-    const dur = 3 + Math.random() * 3;
-    s.style.animationDuration = dur + 's';
-    s.style.fontSize = (14 + Math.random() * 14) + 'px';
-    document.body.appendChild(s);
-    setTimeout(() => s.remove(), dur * 1000);
+function mkFlake() {
+    const s = document.createElement('div'); s.className = 'snowflake';
+    s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+    s.style.left = Math.random()*100+'vw'; const d = 3+Math.random()*3;
+    s.style.animationDuration = d+'s'; s.style.fontSize = (14+Math.random()*14)+'px';
+    document.body.appendChild(s); setTimeout(() => s.remove(), d*1000);
 }
 
-document.getElementById('gentle-exit-btn').addEventListener('click', activateGentleExit);
-function activateGentleExit() {
-    const overlay = document.getElementById('gentleExitOverlay');
-    overlay.classList.add('active');
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 3 + 's';
-        overlay.appendChild(star);
-    }
+/* ===== GENTLE EXIT ===== */
+document.getElementById('gentle-exit-btn').addEventListener('click', () => {
+    const ov = document.getElementById('gentleExitOverlay'); ov.classList.add('active');
+    for (let i=0;i<50;i++) { const s=document.createElement('div'); s.className='star'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.animationDelay=Math.random()*3+'s'; ov.appendChild(s); }
+});
+function deactivateGentleExit() { const ov=document.getElementById('gentleExitOverlay'); ov.classList.remove('active'); document.querySelectorAll('.star').forEach(s=>s.remove()); }
+document.addEventListener('keydown', e => { if (e.key==='Escape') deactivateGentleExit(); });
+
+
+/* ===== LANGUAGE TOGGLE ===== */
+function toggleLang() {
+    document.body.classList.toggle('lang-zh');
 }
-function deactivateGentleExit() {
-    const overlay = document.getElementById('gentleExitOverlay');
-    overlay.classList.remove('active');
-    document.querySelectorAll('.star').forEach(s => s.remove());
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') deactivateGentleExit(); });
+/* ===== STAR TOGGLE ===== */
+let starsOn = true;
+document.getElementById('star-toggle-btn').addEventListener('click', () => {
+    starsOn = !starsOn;
+    const btn = document.getElementById('star-toggle-btn');
+    starCanvas.style.opacity = starsOn ? '1' : '0';
+    btn.classList.toggle('off', !starsOn);
+    btn.innerHTML = starsOn ? '<i class="fas fa-star"></i> <span class="en">Stars</span><span class="zh">星空</span>' : '<i class="far fa-star"></i> Stars';
+});
 </script>
-
-<div id="copyFlash" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2affa0;color:#000;padding:10px 22px;border-radius:8px;font-size:0.78rem;font-weight:700;z-index:99999;opacity:0;transition:opacity 0.3s;pointer-events:none;">✓ Email copied!</div>
-
+<footer style="text-align:center; padding: 40px 0 50px; position: relative; z-index: 1;">
+  <button id="lang-btn" onclick="toggleLang()"><span class="en">中文</span><span class="zh">EN</span></button>
+</footer>
 </body>
 </html>
